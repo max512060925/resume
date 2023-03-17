@@ -2,7 +2,7 @@
 .container(ref='box')
   Loading(:percentage='percentage', :load-text='loadText', v-if='loading')
   .btn-box(v-else)
-    SvgIcon(:name='start ? "pause" : "play"', @click='start = !start')
+    SvgIcon(:name='start ? "pause" : "play"', @click='play')
   canvas#webgl-canvas(ref='canvas')
 </template>
 
@@ -23,7 +23,6 @@ import {
   DirectionalLight,
   sRGBEncoding,
   Vector3,
-  Group,
 } from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { MMDLoader } from 'three/examples/jsm/loaders/MMDLoader.js'
@@ -36,11 +35,10 @@ let start = $ref(false)
 let loading = $ref(true)
 let percentage = $ref(0)
 let loadText = $ref('')
-const scale = 0.3
 const { Ammo } = window
 const manager = new LoadingManager() //加载管理器
 const scene = new Scene() //场景
-const camera = new PerspectiveCamera(45, 1, 0.1, 2000) //摄像机
+const camera = new PerspectiveCamera(45, 1, 0.1, 100) //摄像机
 const clock = new Clock() // 设置时钟
 
 const helper = new MMDAnimationHelper()
@@ -48,7 +46,9 @@ const mmdLoader = new MMDLoader(manager) //mmd加载器
 const audioLoader = new AudioLoader(manager) //音频加载器
 const listener = new AudioListener()
 // const ambientLight = new AmbientLight('#fff') // 光
-const directionalLight = new DirectionalLight(0xffffff, 0.5) //平行光
+const directionalLight = new DirectionalLight(0xffffff, 1) //平行光
+
+const scale = 0.3
 scene.add(directionalLight)
 
 let renderer: WebGLRenderer, //渲染器
@@ -59,6 +59,7 @@ camera.add(listener)
 scene.add(camera)
 scene.add(directionalLight)
 
+// const sky
 const loadModelAndAnimation = (): Promise<MMDLoaderAnimationObject> =>
   new Promise(resolve =>
     mmdLoader.loadWithAnimation(
@@ -79,33 +80,38 @@ const loadModel = async () => {
   const [{ mesh, animation }, cameraAnimation, buffer] = await Promise.all([
     loadModelAndAnimation(),
     loadCameraMotion(),
-    audioLoader.loadAsync('/model/keqing/红昭愿-音阙诗听.mp3'),
+    audioLoader.loadAsync(
+      // 'https://m701.music.126.net/20230317220547/6bef08287eeb3c127b759f3abd6249e0/jdyyaac/obj/w5rDlsOJwrLDjj7CmsOj/14096631885/0cf4/3be2/b803/196c17df9f34ba18122c2d602890ae06.m4a'
+      '/model/keqing/summertime.wav'
+    ),
   ])
-  mesh.scale.set(scale, scale, scale)
+
   helper.add(mesh, {
     animation,
     physics: true,
+    gravity: 9.8,
   })
+  console.log(cameraAnimation)
   helper.add(camera, {
     animation: cameraAnimation,
+    physics: true,
+    gravity: 9.8,
   })
   audio = new Audio(listener)
-  helper.add(audio.setBuffer(buffer), {
-    delayTime: (160 * 1) / 30,
-  })
+  helper.add(audio.setBuffer(buffer))
   mesh.geometry.computeBoundingBox()
   scene.add(mesh)
   const centerY =
-    ((mesh.geometry.boundingBox.max.y - mesh.geometry.boundingBox.min.y) *
-      scale) /
-    2
-  camera.position.set(mesh.position.x, centerY, 10)
+    (mesh.geometry.boundingBox.max.y - mesh.geometry.boundingBox.min.y) / 2
+  camera.zoom = 0.75
+  camera.position.set(mesh.position.x, centerY, 20)
   controls.target = new Vector3(mesh.position.x, centerY, mesh.position.z)
   camera.lookAt(new Vector3(mesh.position.x, centerY, mesh.position.z))
 }
 const render = () => {
   const time = clock.getDelta()
   start ? helper.update(time) : controls.update()
+
   renderer.render(scene, camera)
   requestAnimationFrame(render)
 }
@@ -115,6 +121,11 @@ const resizeDebounced = useDebounceFn(() => {
   camera.updateProjectionMatrix()
   renderer.setSize(box.clientWidth, box.clientHeight)
 }, 100)
+
+const play = () => {
+  start = !start
+  start ? audio.play() : audio.pause()
+}
 
 onMounted(async () => {
   await Ammo()
@@ -151,7 +162,8 @@ manager.onProgress = (url, loaded, total) => {
   transform: translate(-50%);
   left: 50%;
   .svg-icon {
-    font-size: 20px;
+    font-size: 5vw;
+    color: #999;
     cursor: pointer;
   }
 }

@@ -18,11 +18,11 @@ defineProps<{ percentage: number }>()
   background-color: #fafafa;
   .content {
     width: 50%;
-    height: 10px;
+    height: 15px;
     position: absolute;
     top: 50%;
     left: 50%;
-    border: 2px solid #14b8a6;
+    border: 4px solid #14b8a6;
     border-radius: 10px;
     transform: translate(-50%, -50%);
     overflow: hidden;
@@ -33,6 +33,8 @@ defineProps<{ percentage: number }>()
       height: 100%;
       transform: translate(0);
       background-size: 30px 30px;
+      border-radius: 30px;
+      overflow: hidden;
       background-image: linear-gradient(
         -45deg,
         #fde68a,
