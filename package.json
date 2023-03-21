@@ -1,33 +1,25 @@
 {
-  "name": "3d-room",
   "private": true,
-  "version": "0.0.0",
-  "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vue-tsc && vite build",
-    "preview": "vite preview"
-  },
-  "dependencies": {
-    "@vueuse/core": "^9.13.0",
-    "normalize.css": "^8.0.1",
-    "sass": "^1.59.3",
-    "three": "^0.150.1",
-    "vue": "^3.2.47",
-    "vue-router": "^4.1.6"
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
   },
   "devDependencies": {
-    "@types/node": "^18.15.3",
+    "@nuxtjs/tailwindcss": "^6.6.0",
     "@types/three": "^0.149.0",
-    "@vitejs/plugin-vue": "^4.1.0",
     "@volar/vue-language-plugin-pug": "^1.2.0",
     "@vue-macros/reactivity-transform": "^0.2.5",
+    "@vueuse/core": "^9.13.0",
+    "@vueuse/nuxt": "^9.13.0",
+    "nuxt": "^3.3.1",
     "pug": "^3.0.2",
-    "typescript": "^5.0.2",
-    "unplugin-auto-import": "^0.15.1",
-    "unplugin-vue-components": "^0.24.1",
-    "vite": "^4.2.0",
-    "vite-plugin-svg-icons": "^2.0.1",
-    "vue-tsc": "^1.2.0"
+    "sass": "^1.59.3",
+    "vite-plugin-svg-icons": "^2.0.1"
+  },
+  "dependencies": {
+    "three": "^0.150.1"
   }
 }
