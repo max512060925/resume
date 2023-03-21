@@ -6,7 +6,7 @@ export default <RouterConfig>{
     home.path = '/'
     return [
       ..._routes,
-      { path: '/:pathMatch(.*)*', name: '404', redirect: '/' },
+      { path: '/:pathMatch(.*)*', name: '404', redirect: '/Firework' },
     ]
   },
 }

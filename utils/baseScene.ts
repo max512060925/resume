@@ -22,7 +22,8 @@ interface CameraParams {
   fov: number
   near: number
   far: number
-  background: string
+  position?: [number, number, number]
+  background?: string
 }
 
 interface BaseParams {
@@ -39,10 +40,22 @@ export default class BaseWord {
   needControl: boolean
   constructor({ camera, control }: BaseParams = {}) {
     this.scene = new Scene()
-    this.scene.background = new Color(camera.background)
-    this.camera = new PerspectiveCamera(camera.far, 1, camera.near, camera.far)
+    this.scene.background = new Color(camera?.background || '#cffafe')
+    this.camera = new PerspectiveCamera(
+      camera?.far || 45,
+      1,
+      camera?.near || 0.1,
+      camera?.far || 1000
+    )
+
+    camera?.position
+      ? this.camera.position.set(...camera.position)
+      : this.camera.position.set(0, 10, 10)
+
     this.clock = new Clock()
     this.needControl = control
+    this.scene.add(new AxesHelper(5))
+    this.scene.add(this.camera)
   }
   start(canvas: HTMLCanvasElement, box?: HTMLDivElement) {
     this.camera.aspect =
@@ -73,16 +86,15 @@ export default class BaseWord {
         }, 100)
       )
     }
-
-    this.render()
   }
-  render(cb?) {
-    const deltaTime = this.clock.getDelta()
-    // start ? helper.update(time) : controls.update()
-    this.renderer.render(this.scene, this.camera)
+  animate(cb) {
     if (cb instanceof Function) {
-      cb({ deltaTime })
+      cb()
     }
-    requestAnimationFrame(() => this.render(cb))
+    if (this.needControl) {
+      this.control.update()
+    }
+    this.renderer.render(this.scene, this.camera)
+    requestAnimationFrame(() => this.animate(cb))
   }
 }
