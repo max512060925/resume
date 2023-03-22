@@ -9,32 +9,35 @@ import {
 } from 'three'
 import pointVertex from '@/shaders/point/vertex.glsl'
 import pointFragment from '@/shaders/point/fragment.glsl'
+import fireVertex from '@/shaders/fire/vertex.glsl'
+import fireFragment from '@/shaders/fire/fragment.glsl'
 
 export default class Firework {
   color: Color
   point: Points //初始圆点
   fire: Points //爆炸效果
   clock: Clock
+  cacheSize: number
   constructor(color: string, to: [number, number, number], from = [0, 0, 0]) {
     this.color = new Color(color)
+    console.log(this.color)
     this.point = new Points(
       new BufferGeometry(),
       new ShaderMaterial({
         vertexShader: pointVertex,
         fragmentShader: pointFragment,
         transparent: true,
-        blending: AdditiveBlending,
-        // depthWrite: false,
+        // blending: AdditiveBlending,
+        depthWrite: false,
         uniforms: {
           time: {
             value: 0,
           },
           size: {
-            value: 20,
+            value: 0,
           },
           color: { value: this.color },
         },
-        vertexColors: true,
       })
     )
     this.point.geometry.setAttribute(
@@ -70,24 +73,65 @@ export default class Firework {
         radius * Math.sin(horizontalAngle) + radius * Math.cos(verticalAngle)
     }
 
-    this.fire = new Points(new BufferGeometry(), new ShaderMaterial({}))
+    this.fire = new Points(
+      new BufferGeometry(),
+      new ShaderMaterial({
+        vertexShader: fireVertex,
+        fragmentShader: fireFragment,
+        transparent: true,
+        blending: AdditiveBlending,
+        depthWrite: false,
+        uniforms: {
+          time: {
+            value: 0,
+          },
+          size: {
+            value: 0,
+          },
+          color: { value: this.color },
+        },
+      })
+    )
     this.fire.geometry.setAttribute(
       'position',
       new BufferAttribute(firePositions, 3)
     )
+    this.fire.geometry.setAttribute('scale', new BufferAttribute(fireScales, 1))
+    this.fire.geometry.setAttribute(
+      'random',
+      new BufferAttribute(directions, 3)
+    )
     this.clock = new Clock()
   }
+  dispose(obj: Points) {
+    obj.geometry.dispose()
+    ;(obj.material as ShaderMaterial).dispose()
+    obj.clear()
+  }
+
   update() {
     const elapsedTime = this.clock.getElapsedTime()
-    const { uniforms } = this.point.material as ShaderMaterial
+    const { uniforms: pointUniforms } = this.point.material as ShaderMaterial
+    const { uniforms: fireUniforms } = this.fire.material as ShaderMaterial
+
     if (elapsedTime < 1) {
-      uniforms.time.value = elapsedTime
-      uniforms.size.value = 10 + 10 * elapsedTime
-    } else {
-      uniforms.size.value = 0
-      this.point.geometry.dispose()
-      ;(this.point.material as ShaderMaterial).dispose()
-      this.point.clear()
+      pointUniforms.time.value = elapsedTime
+      pointUniforms.size.value = 10 + 10 * elapsedTime
+      this.cacheSize = pointUniforms.size.value
+    } else if (elapsedTime >= 1 && elapsedTime <= 5) {
+      const time = 1 - elapsedTime
+
+      fireUniforms.size.value = this.cacheSize
+      fireUniforms.time.value = time
+      pointUniforms.size.value = 0
+      // console.log(fireUniforms.size.value)
+      this.dispose(this.point)
+    } else if (elapsedTime > 5) {
+      this.cacheSize = 0
+      const time = 5 - elapsedTime
+      fireUniforms.time.value = elapsedTime
+      fireUniforms.size.value = 0
+      this.dispose(this.fire)
     }
   }
 }

@@ -19,9 +19,9 @@ import {
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 
 interface CameraParams {
-  fov: number
-  near: number
-  far: number
+  fov?: number
+  near?: number
+  far?: number
   position?: [number, number, number]
   background?: string
 }
@@ -67,13 +67,14 @@ export default class BaseWord {
     }
     this.renderer = new WebGLRenderer({
       canvas,
+      alpha: true,
       antialias: true, //抗锯齿
     })
     this.renderer.setSize(
       (box || canvas).clientWidth,
       (box || canvas).clientHeight
     )
-    this.renderer.physicallyCorrectLights = true
+    // this.renderer.physicallyCorrectLights = true
     this.renderer.outputEncoding = sRGBEncoding
     this.renderer.render(this.scene, this.camera)
 

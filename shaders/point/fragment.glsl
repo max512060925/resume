@@ -1,4 +1,3 @@
-
 uniform vec3 color;
 void main(){
   float distanceToCenter=distance(gl_PointCoord,vec2(.5));
@@ -7,3 +6,4 @@ void main(){
   strength=pow(strength,1.5);
   gl_FragColor=vec4(color,strength);
 }
+
