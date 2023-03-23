@@ -6,6 +6,9 @@ import {
   AdditiveBlending,
   BufferAttribute,
   Clock,
+  AudioListener,
+  Audio,
+  AudioLoader,
 } from 'three'
 import pointVertex from '@/shaders/point/vertex.glsl'
 import pointFragment from '@/shaders/point/fragment.glsl'
@@ -18,16 +21,19 @@ export default class Firework {
   fire: Points //爆炸效果
   clock: Clock
   cacheSize: number
+  sound: Audio
+  boomSound: Audio
+
+  isBoomed: boolean
   constructor(color: string, to: [number, number, number], from = [0, 0, 0]) {
     this.color = new Color(color)
-    console.log(this.color)
     this.point = new Points(
       new BufferGeometry(),
       new ShaderMaterial({
         vertexShader: pointVertex,
         fragmentShader: pointFragment,
         transparent: true,
-        // blending: AdditiveBlending,
+        blending: AdditiveBlending,
         depthWrite: false,
         uniforms: {
           time: {
@@ -102,6 +108,25 @@ export default class Firework {
       new BufferAttribute(directions, 3)
     )
     this.clock = new Clock()
+    const audioLoader = new AudioLoader()
+
+    this.sound = new Audio(new AudioListener())
+    this.boomSound = new Audio(new AudioListener())
+
+    audioLoader.load('/audio/firework.mp3', buffer => {
+      this.sound.setBuffer(buffer)
+      this.sound.setVolume(1)
+      this.sound.play()
+    })
+
+    audioLoader.load(
+      `/audio/boom${Math.floor(Math.random() * 4) + 1}.ogg`,
+      buffer => {
+        this.boomSound.setBuffer(buffer)
+        this.boomSound.setVolume(1)
+        this.isBoomed = false
+      }
+    )
   }
   dispose(obj: Points) {
     obj.geometry.dispose()
@@ -109,7 +134,7 @@ export default class Firework {
     obj.clear()
   }
 
-  update() {
+  update(cb) {
     const elapsedTime = this.clock.getElapsedTime()
     const { uniforms: pointUniforms } = this.point.material as ShaderMaterial
     const { uniforms: fireUniforms } = this.fire.material as ShaderMaterial
@@ -118,20 +143,23 @@ export default class Firework {
       pointUniforms.time.value = elapsedTime
       pointUniforms.size.value = 10 + 10 * elapsedTime
       this.cacheSize = pointUniforms.size.value
-    } else if (elapsedTime >= 1 && elapsedTime <= 5) {
-      const time = 1 - elapsedTime
+    } else if (elapsedTime >= 1) {
+      const time = elapsedTime - 1
 
       fireUniforms.size.value = this.cacheSize
       fireUniforms.time.value = time
       pointUniforms.size.value = 0
-      // console.log(fireUniforms.size.value)
       this.dispose(this.point)
-    } else if (elapsedTime > 5) {
-      this.cacheSize = 0
-      const time = 5 - elapsedTime
-      fireUniforms.time.value = elapsedTime
-      fireUniforms.size.value = 0
-      this.dispose(this.fire)
+      if (!this.boomSound.isPlaying && !this.isBoomed) {
+        this.boomSound.play()
+        this.isBoomed = true
+      }
+      if (elapsedTime > 5) {
+        this.cacheSize = 0
+        fireUniforms.time.value = elapsedTime
+        fireUniforms.size.value = 0
+        this.dispose(this.fire)
+      }
     }
   }
 }

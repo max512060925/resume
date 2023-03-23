@@ -4,7 +4,7 @@ specifiers:
   '@nuxtjs/tailwindcss': ^6.6.4
   '@types/three': ^0.149.0
   '@volar/vue-language-plugin-pug': ^1.2.0
-  '@vue-macros/reactivity-transform': ^0.3.0
+  '@vue-macros/reactivity-transform': ^0.3.1
   '@vueuse/core': ^9.13.0
   '@vueuse/nuxt': ^9.13.0
   nuxt: ^3.3.1
@@ -21,7 +21,7 @@ devDependencies:
   '@nuxtjs/tailwindcss': registry.npmmirror.com/@nuxtjs/tailwindcss/6.6.4
   '@types/three': registry.npmmirror.com/@types/three/0.149.0
   '@volar/vue-language-plugin-pug': registry.npmmirror.com/@volar/vue-language-plugin-pug/1.2.0
-  '@vue-macros/reactivity-transform': registry.npmmirror.com/@vue-macros/reactivity-transform/0.3.0
+  '@vue-macros/reactivity-transform': registry.npmmirror.com/@vue-macros/reactivity-transform/0.3.1
   '@vueuse/core': registry.npmmirror.com/@vueuse/core/9.13.0
   '@vueuse/nuxt': registry.npmmirror.com/@vueuse/nuxt/9.13.0_nuxt@3.3.1
   nuxt: registry.npmmirror.com/nuxt/3.3.1_sass@1.59.3
@@ -1813,10 +1813,10 @@ packages:
     version: 0.0.11
     dev: true
 
-  registry.npmmirror.com/@vue-macros/common/1.1.2:
-    resolution: {integrity: sha512-G/lAdxB/jO0wUcn1n2N1WxbSke0lShjpKxvIF2hRVLAbyautlSozGp5kLJ+BqSdVB0QmmNONpCtk8GR7ZIJJCA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@vue-macros/common/-/common-1.1.2.tgz}
+  registry.npmmirror.com/@vue-macros/common/1.1.3:
+    resolution: {integrity: sha512-g+vuQ1UK1YW9XKNf/qbDJzXumF4Bmac0eKwWipxo1xD95vP7XkAtYuqdxWNJV50ByEfuoF6/fRnPBgNcn/is0w==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@vue-macros/common/-/common-1.1.3.tgz}
     name: '@vue-macros/common'
-    version: 1.1.2
+    version: 1.1.3
     engines: {node: '>=14.19.0'}
     peerDependencies:
       vue: ^2.7.0 || ^3.2.25
@@ -1833,16 +1833,16 @@ packages:
       - rollup
     dev: true
 
-  registry.npmmirror.com/@vue-macros/reactivity-transform/0.3.0:
-    resolution: {integrity: sha512-eXDqvgcHvNc8BFgJGDKXLGxE/T9jmSsO/01ssZ5QeVsXPkBpymurSmGHWUMmdP0asEadF+y/tF9QVeJovA6fKw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@vue-macros/reactivity-transform/-/reactivity-transform-0.3.0.tgz}
+  registry.npmmirror.com/@vue-macros/reactivity-transform/0.3.1:
+    resolution: {integrity: sha512-X3YudEAzihwwp87tE7B5oCEBSNDcz3Z+Yv9OS4bHqXsOp+OlLB4zn38/NJrpjxqBtUrLKyOM1qzbGKWAXrZNyw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@vue-macros/reactivity-transform/-/reactivity-transform-0.3.1.tgz}
     name: '@vue-macros/reactivity-transform'
-    version: 0.3.0
+    version: 0.3.1
     engines: {node: '>=14.19.0'}
     peerDependencies:
       vue: ^2.7.0 || ^3.2.25
     dependencies:
       '@babel/parser': registry.npmmirror.com/@babel/parser/7.21.3
-      '@vue-macros/common': registry.npmmirror.com/@vue-macros/common/1.1.2
+      '@vue-macros/common': registry.npmmirror.com/@vue-macros/common/1.1.3
       '@vue/compiler-core': registry.npmmirror.com/@vue/compiler-core/3.2.47
       '@vue/shared': registry.npmmirror.com/@vue/shared/3.2.47
       magic-string: registry.npmmirror.com/magic-string/0.30.0

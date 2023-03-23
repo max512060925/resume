@@ -11,7 +11,7 @@
     "@nuxtjs/tailwindcss": "^6.6.4",
     "@types/three": "^0.149.0",
     "@volar/vue-language-plugin-pug": "^1.2.0",
-    "@vue-macros/reactivity-transform": "^0.3.0",
+    "@vue-macros/reactivity-transform": "^0.3.1",
     "@vueuse/core": "^9.13.0",
     "@vueuse/nuxt": "^9.13.0",
     "nuxt": "^3.3.1",

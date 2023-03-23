@@ -26,9 +26,15 @@ interface CameraParams {
   background?: string
 }
 
+interface AmbientParams {
+  color: string
+  intensity: number
+}
+
 interface BaseParams {
   camera?: CameraParams
   control?: boolean
+  ambient?: AmbientParams
 }
 
 export default class BaseWord {
@@ -36,18 +42,25 @@ export default class BaseWord {
   camera: PerspectiveCamera //摄像机
   renderer: WebGLRenderer //渲染器
   control: OrbitControls //控制器
+  ambient: AmbientLight // 环境光
   clock: Clock // 时钟
   needControl: boolean
-  constructor({ camera, control }: BaseParams = {}) {
+  constructor({ camera, control, ambient }: BaseParams = {}) {
     this.scene = new Scene()
-    this.scene.background = new Color(camera?.background || '#cffafe')
+    this.scene.background = new Color(camera?.background || '#334155') //'#cffafe'
     this.camera = new PerspectiveCamera(
       camera?.far || 45,
       1,
       camera?.near || 0.1,
       camera?.far || 1000
     )
-
+    if (ambient) {
+      this.ambient = new AmbientLight(
+        new Color(ambient.color),
+        ambient.intensity
+      )
+      this.scene.add(this.ambient)
+    }
     camera?.position
       ? this.camera.position.set(...camera.position)
       : this.camera.position.set(0, 10, 10)
