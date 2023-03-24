@@ -8,6 +8,7 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
+    "@element-plus/nuxt": "^1.0.4",
     "@nuxtjs/tailwindcss": "^6.6.4",
     "@types/three": "^0.149.0",
     "@volar/vue-language-plugin-pug": "^1.2.0",
@@ -21,6 +22,7 @@
     "vite-plugin-svg-icons": "^2.0.1"
   },
   "dependencies": {
+    "element-plus": "^2.3.1",
     "three": "^0.150.1"
   }
 }

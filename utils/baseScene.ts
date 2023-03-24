@@ -26,7 +26,7 @@ interface CameraParams {
   background?: string
 }
 
-interface AmbientParams {
+interface LightParams {
   color: string
   intensity: number
 }
@@ -34,7 +34,8 @@ interface AmbientParams {
 interface BaseParams {
   camera?: CameraParams
   control?: boolean
-  ambient?: AmbientParams
+  ambient?: LightParams
+  directional?: LightParams
 }
 
 export default class BaseWord {
@@ -43,9 +44,10 @@ export default class BaseWord {
   renderer: WebGLRenderer //渲染器
   control: OrbitControls //控制器
   ambient: AmbientLight // 环境光
+  directional: DirectionalLight //平行光
   clock: Clock // 时钟
   needControl: boolean
-  constructor({ camera, control, ambient }: BaseParams = {}) {
+  constructor({ camera, control, ambient, directional }: BaseParams = {}) {
     this.scene = new Scene()
     this.scene.background = new Color(camera?.background || '#334155') //'#cffafe'
     this.camera = new PerspectiveCamera(
@@ -60,6 +62,14 @@ export default class BaseWord {
         ambient.intensity
       )
       this.scene.add(this.ambient)
+    }
+
+    if (directional) {
+      this.directional = new DirectionalLight(
+        new Color(directional.color),
+        directional.intensity
+      )
+      this.scene.add(this.directional)
     }
     camera?.position
       ? this.camera.position.set(...camera.position)

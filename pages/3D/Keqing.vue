@@ -1,11 +1,18 @@
 <template lang="pug">
-.container(ref='box')
-  Loading(:percentage='percentage', :load-text='loadText', v-if='loading')
-  .btn-box(v-else)
-    SvgIcon(:name='start ? "pause" : "play"', @click='start = !start')
-  canvas#webgl-canvas(ref='canvas')
+.w-full(ref='box')
+  Loading(:percentage='percentage', :load-text='loadText', v-if='!loading')
+  .absolute.bottom-5(v-else, class='w-11/12 left-1/2 -translate-x-1/2')
+    SvgIcon.text-900.cursor-pointer(
+      class='text-[5vmin]',
+      :name='start ? "pause" : "play"',
+      @click='play'
+    )
+  canvas.w-full.h-full(ref='canvas')
 </template>
 <script lang="ts" setup>
+import { Vector3 } from 'three'
+import BaseWord from '@/utils/baseScene'
+import MMD from '@/utils/mmd'
 useHead({
   title: '刻晴',
   script: [{ src: '/ammo/ammo.wasm.js' }],
@@ -17,4 +24,46 @@ let start = $ref(false)
 let loading = $ref(true)
 let percentage = $ref(0)
 let loadText = $ref('')
+
+const word = new BaseWord({
+  control: true,
+  camera: {
+    fov: 45,
+    near: 0.1,
+    far: 100,
+    position: [50, 50, 50],
+  },
+  directional: {
+    color: '#fff',
+    intensity: 0.7,
+  },
+})
+const mmd = new MMD()
+
+const play = () => {
+  start = !start
+  start ? mmd.audio?.play() : mmd.audio?.pause()
+}
+onMounted(async () => {
+  const { Ammo } = window
+  await Ammo()
+  word.start(canvas, box)
+  const [mesh] = await Promise.all([
+    mmd.loadModelAndAnimation({
+      pmx: '/model/keqing/keqing.pmx',
+      vmd: '/model/keqing/motion.vmd',
+    }),
+    mmd.loadCameraMotion('/model/keqing/camera.vmd', word.camera),
+    mmd.loadAudio('/model/keqing/summertime.wav', word.camera),
+  ])
+  mesh.geometry.computeBoundingBox()
+  word.scene.add(mesh)
+  const centerY =
+    (mesh.geometry.boundingBox.max.y - mesh.geometry.boundingBox.min.y) / 2
+  word.camera.zoom = 0.75
+  word.camera.position.set(mesh.position.x, centerY, 20)
+  word.control.target = new Vector3(mesh.position.x, centerY, mesh.position.z)
+  word.camera.lookAt(new Vector3(mesh.position.x, centerY, mesh.position.z))
+  word.animate(() => {})
+})
 </script>

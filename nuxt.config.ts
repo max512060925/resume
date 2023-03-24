@@ -14,7 +14,10 @@ export default defineNuxtConfig({
     rootTag: 'section',
   },
   css: ['@/assets/style/tailwind.css', '@/assets/style/index.scss'],
-  modules: ['@vueuse/nuxt', '@nuxtjs/tailwindcss'],
+  modules: ['@element-plus/nuxt', '@vueuse/nuxt', '@nuxtjs/tailwindcss'],
+  elementPlus: {
+    importStyle: 'scss',
+  },
   vite: {
     plugins: [
       createSvgIconsPlugin({
