@@ -111,7 +111,7 @@ export default class BaseWord {
       )
     }
   }
-  animate(cb) {
+  animate(cb?) {
     if (cb instanceof Function) {
       cb()
     }

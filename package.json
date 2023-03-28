@@ -10,19 +10,20 @@
   "devDependencies": {
     "@element-plus/nuxt": "^1.0.4",
     "@nuxtjs/tailwindcss": "^6.6.4",
-    "@types/three": "^0.149.0",
+    "@types/three": "^0.150.0",
     "@volar/vue-language-plugin-pug": "^1.2.0",
-    "@vue-macros/reactivity-transform": "^0.3.1",
+    "@vue-macros/reactivity-transform": "^0.3.3",
     "@vueuse/core": "^9.13.0",
     "@vueuse/nuxt": "^9.13.0",
-    "nuxt": "^3.3.1",
+    "nuxt": "^3.3.2",
     "pug": "^3.0.2",
-    "sass": "^1.59.3",
+    "sass": "^1.60.0",
     "vite-plugin-glsl": "^1.1.2",
     "vite-plugin-svg-icons": "^2.0.1"
   },
   "dependencies": {
     "element-plus": "^2.3.1",
+    "openai": "^3.2.1",
     "three": "^0.150.1"
   }
 }

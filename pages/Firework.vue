@@ -6,7 +6,12 @@
 <script lang="ts" setup>
 import BaseWord from '@/utils/baseScene'
 import Firework from '@/utils/firework'
-import { PlaneGeometry, TextureLoader, RepeatWrapping } from 'three'
+import {
+  ACESFilmicToneMapping,
+  PlaneGeometry,
+  TextureLoader,
+  RepeatWrapping,
+} from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { Water } from 'three/examples/jsm/objects/Water2'
 useHead({
@@ -48,6 +53,7 @@ loader.load('/models/building/building.glb', ({ scene }) =>
 const textureLoader = new TextureLoader()
 onMounted(() => {
   word.start(canvas, box)
+  word.renderer.toneMapping = ACESFilmicToneMapping
   word.animate(() => {
     fireworks.forEach((item, i) =>
       item.update(() => {

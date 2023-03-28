@@ -18,6 +18,9 @@ export default defineNuxtConfig({
   elementPlus: {
     importStyle: 'scss',
   },
+  runtimeConfig: {
+    openaiApiKey: '',
+  },
   vite: {
     plugins: [
       createSvgIconsPlugin({
