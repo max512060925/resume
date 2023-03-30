@@ -16,9 +16,6 @@ export default defineNuxtConfig({
   },
   css: ['@/assets/style/tailwind.css', '@/assets/style/index.scss'],
   modules: ['@element-plus/nuxt', '@vueuse/nuxt', '@nuxtjs/tailwindcss'],
-  tailwindcss: {
-    cssPath: '~/assets/style/tailwind.css',
-  },
   elementPlus: {
     importStyle: 'scss',
   },

@@ -1,7 +1,9 @@
 <template lang="pug">
 .content.h-full
-  canvas#webgl-canvas.w-full.h-full(ref="canvas")
-  button.p-2.absolute.bg-yellow-400.top-4.right-4.rounded.text-purple-700(@click="launch") 发射烟花
+  canvas#webgl-canvas.w-full.h-full(ref='canvas')
+  button.p-2.absolute.bg-yellow-400.top-4.right-4.rounded.text-purple-700(
+    @click='launch'
+  ) 发射烟花
 </template>
 <script lang="ts" setup>
 import BaseWord from '@/utils/baseScene'
@@ -12,8 +14,8 @@ import {
   TextureLoader,
   RepeatWrapping,
 } from 'three'
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
-import { Water } from 'three/examples/jsm/objects/Water2'
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
+import { Water } from 'three/examples/jsm/objects/Water2.js'
 useHead({
   title: '放烟花',
 })

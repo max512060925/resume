@@ -16,7 +16,7 @@ import {
   Vector3,
 } from 'three'
 import type { SkinnedMesh } from 'three'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+// import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { MMDLoader } from 'three/examples/jsm/loaders/MMDLoader.js'
 import type { MMDLoaderAnimationObject } from 'three/examples/jsm/loaders/MMDLoader.js'
 import { MMDAnimationHelper } from 'three/examples/jsm/animation/MMDAnimationHelper.js'
@@ -68,5 +68,8 @@ export default class MMD {
     this.audio = new Audio(listener)
     this.helper.add(this.audio.setBuffer(buffer))
     camera.add(listener)
+  }
+  update(time) {
+    this.helper.update(time)
   }
 }

@@ -9,7 +9,7 @@ import THREE, {
   LoadingManager,
   TextureLoader,
 } from 'three'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 
 const livingPics = import.meta.glob('../../public/imgs/living/*.jpg')
 

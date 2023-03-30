@@ -4,7 +4,7 @@ NuxtLink(to='/3D/Keqing') 刻晴
 NuxtLink(to='/About') about
 NuxtLink(to='/fireword') fireword
 </template>
-<script lang="ts">
+<script lang="ts" setup>
 useHead({
   title: '姚彦斌',
 })

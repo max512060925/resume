@@ -17,7 +17,7 @@ import {
   Group,
 } from 'three'
 import type { ColorRepresentation } from 'three'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 
 interface CameraParams {
   fov?: number
@@ -98,7 +98,7 @@ export default class BaseWord {
       (box || canvas).clientWidth,
       (box || canvas).clientHeight
     )
-    // this.renderer.physicallyCorrectLights = true
+    this.renderer.useLegacyLights = true
     this.renderer.outputEncoding = sRGBEncoding
     this.renderer.render(this.scene, this.camera)
 

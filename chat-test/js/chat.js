@@ -1,5 +1,5 @@
 // 清空上下文，开启全新的聊天
-const apiUrl = 'http://localhost:3000/api/chat'
+const apiUrl = 'http://localhost:3000/api/chat/completion'
 
 function clear() {
   fetch(apiUrl, {

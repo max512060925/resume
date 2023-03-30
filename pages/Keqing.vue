@@ -24,10 +24,15 @@ import {
   sRGBEncoding,
   Vector3,
 } from 'three'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { MMDLoader } from 'three/examples/jsm/loaders/MMDLoader.js'
 import type { MMDLoaderAnimationObject } from 'three/examples/jsm/loaders/MMDLoader.js'
 import { MMDAnimationHelper } from 'three/examples/jsm/animation/MMDAnimationHelper.js'
+
+useHead({
+  title: '测试',
+  script: [{ src: '/ammo/ammo.wasm.js' }],
+})
 
 let canvas: HTMLCanvasElement = $ref()
 let box: HTMLDivElement = $ref()
@@ -35,7 +40,7 @@ let start = $ref(false)
 let loading = $ref(true)
 let percentage = $ref(0)
 let loadText = $ref('')
-const { Ammo } = window
+
 const manager = new LoadingManager() //加载管理器
 const scene = new Scene() //场景
 const camera = new PerspectiveCamera(45, 1, 0.1, 100) //摄像机
@@ -44,7 +49,7 @@ const clock = new Clock() // 设置时钟
 const helper = new MMDAnimationHelper()
 const mmdLoader = new MMDLoader(manager) //mmd加载器
 const audioLoader = new AudioLoader(manager) //音频加载器
-const listener = new AudioListener()
+
 // const ambientLight = new AmbientLight('#fff') // 光
 const directionalLight = new DirectionalLight(0xffffff, 1) //平行光
 
@@ -55,7 +60,7 @@ let renderer: WebGLRenderer, //渲染器
   controls: OrbitControls, //控制器
   audio: Audio //音频
 // scene.add(new AxesHelper(5)) // 辅助线
-camera.add(listener)
+
 scene.add(camera)
 scene.add(directionalLight)
 
@@ -63,15 +68,15 @@ scene.add(directionalLight)
 const loadModelAndAnimation = (): Promise<MMDLoaderAnimationObject> =>
   new Promise(resolve =>
     mmdLoader.loadWithAnimation(
-      '/model/keqing/keqing.pmx',
-      '/model/keqing/motion.vmd',
+      '/models/keqing/keqing.pmx',
+      '/models/keqing/motion.vmd',
       obj => resolve(obj)
     )
   )
 
 const loadCameraMotion = (): Promise<AnimationClip> =>
   new Promise(resolve =>
-    mmdLoader.loadAnimation('/model/keqing/camera.vmd', camera, animation =>
+    mmdLoader.loadAnimation('/models/keqing/camera.vmd', camera, animation =>
       resolve(animation as AnimationClip)
     )
   )
@@ -82,16 +87,16 @@ const loadModel = async () => {
     loadCameraMotion(),
     audioLoader.loadAsync(
       // 'https://m701.music.126.net/20230317220547/6bef08287eeb3c127b759f3abd6249e0/jdyyaac/obj/w5rDlsOJwrLDjj7CmsOj/14096631885/0cf4/3be2/b803/196c17df9f34ba18122c2d602890ae06.m4a'
-      '/model/keqing/summertime.wav'
+      '/models/keqing/summertime.wav'
     ),
   ])
-
+  const listener = new AudioListener()
+  camera.add(listener)
   helper.add(mesh, {
     animation,
     physics: true,
     gravity: 9.8,
   })
-  console.log(cameraAnimation)
   helper.add(camera, {
     animation: cameraAnimation,
     physics: true,
@@ -128,6 +133,7 @@ const play = () => {
 }
 
 onMounted(async () => {
+  const { Ammo } = window
   await Ammo()
   controls = new OrbitControls(camera, canvas) // 控制器
   controls.enableDamping = true
@@ -140,9 +146,8 @@ onMounted(async () => {
     antialias: true, //抗锯齿
   }) //渲染器
   renderer.setSize(canvas.clientWidth, canvas.clientHeight)
-  renderer.physicallyCorrectLights = true
+  renderer.useLegacyLights = true
   renderer.outputEncoding = sRGBEncoding
-
   renderer.render(scene, camera)
   render()
   useResizeObserver(box, resizeDebounced)

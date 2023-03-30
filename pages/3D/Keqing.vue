@@ -1,5 +1,5 @@
 <template lang="pug">
-.w-full(ref='box')
+.w-full.h-full(ref='box')
   Loading(:percentage='percentage', :load-text='loadText', v-if='!loading')
   .absolute.bottom-5(v-else, class='w-11/12 left-1/2 -translate-x-1/2')
     SvgIcon.text-900.cursor-pointer(
@@ -50,11 +50,11 @@ onMounted(async () => {
   word.start(canvas, box)
   const [mesh] = await Promise.all([
     mmd.loadModelAndAnimation({
-      pmx: '/model/keqing/keqing.pmx',
-      vmd: '/model/keqing/motion.vmd',
+      pmx: '/models/keqing/keqing.pmx',
+      vmd: '/models/keqing/motion.vmd',
     }),
-    mmd.loadCameraMotion('/model/keqing/camera.vmd', word.camera),
-    mmd.loadAudio('/model/keqing/summertime.wav', word.camera),
+    mmd.loadCameraMotion('/models/keqing/camera.vmd', word.camera),
+    mmd.loadAudio('/models/keqing/summertime.wav', word.camera),
   ])
   mesh.geometry.computeBoundingBox()
   word.scene.add(mesh)
@@ -64,6 +64,8 @@ onMounted(async () => {
   word.camera.position.set(mesh.position.x, centerY, 20)
   word.control.target = new Vector3(mesh.position.x, centerY, mesh.position.z)
   word.camera.lookAt(new Vector3(mesh.position.x, centerY, mesh.position.z))
-  word.animate(() => {})
+  word.animate(() =>
+    start ? mmd.update(word.clock.getDelta()) : word.control.update()
+  )
 })
 </script>

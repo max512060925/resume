@@ -14,11 +14,11 @@ import {
   CircleGeometry,
   Vector2,
 } from 'three'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
-import { Water } from 'three/examples/jsm/objects/Water2' //水面
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
-import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader'
-import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader'
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
+import { Water } from 'three/examples/jsm/objects/Water2.js' //水面
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
+import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
+import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js'
 
 let canvas: HTMLCanvasElement = $ref()
 let box: HTMLDivElement = $ref()
@@ -61,7 +61,7 @@ sky.material.map.needsUpdate = true
 const water = new Water(new CircleGeometry(300, 64), {
   textureWidth: 1024,
   textureHeight: 1024,
-  color: 'rgba(0,220,255,0.36)',
+  color: 'rgb(0,220,255)',
   scale: 1,
   flowDirection: new Vector2(1, 1),
   normalMap0: textureLoader.load('/imgs/textures/water/Water_1_M_Normal.jpg'),
