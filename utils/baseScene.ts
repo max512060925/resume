@@ -16,6 +16,7 @@ import {
   Vector3,
   Group,
 } from 'three'
+import type { ColorRepresentation } from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 
 interface CameraParams {
@@ -23,11 +24,11 @@ interface CameraParams {
   near?: number
   far?: number
   position?: [number, number, number]
-  background?: string
+  background?: ColorRepresentation
 }
 
 interface LightParams {
-  color: string
+  color: ColorRepresentation
   intensity: number
 }
 

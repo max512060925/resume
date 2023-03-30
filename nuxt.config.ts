@@ -3,6 +3,7 @@ import glsl from 'vite-plugin-glsl'
 import { resolve } from 'path'
 import ReactivityTransform from '@vue-macros/reactivity-transform/vite'
 // https://nuxt.com/docs/api/configuration/nuxt-config
+
 export default defineNuxtConfig({
   app: {
     head: {
@@ -15,11 +16,15 @@ export default defineNuxtConfig({
   },
   css: ['@/assets/style/tailwind.css', '@/assets/style/index.scss'],
   modules: ['@element-plus/nuxt', '@vueuse/nuxt', '@nuxtjs/tailwindcss'],
+  tailwindcss: {
+    cssPath: '~/assets/style/tailwind.css',
+  },
   elementPlus: {
     importStyle: 'scss',
   },
   runtimeConfig: {
-    openaiApiKey: '',
+    openaiApiKey: process.env.OPENAIKEY || '',
+    chatModel: 'gpt-3.5-turbo',
   },
   vite: {
     plugins: [

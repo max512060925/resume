@@ -9,13 +9,16 @@
   },
   "devDependencies": {
     "@element-plus/nuxt": "^1.0.4",
-    "@nuxtjs/tailwindcss": "^6.6.4",
+    "@nuxtjs/tailwindcss": "^6.6.5",
+    "@types/marked": "^4.0.8",
+    "@types/node": "^18.15.11",
     "@types/three": "^0.150.0",
     "@volar/vue-language-plugin-pug": "^1.2.0",
     "@vue-macros/reactivity-transform": "^0.3.3",
     "@vueuse/core": "^9.13.0",
     "@vueuse/nuxt": "^9.13.0",
     "nuxt": "^3.3.2",
+    "postcss": "^8.4.21",
     "pug": "^3.0.2",
     "sass": "^1.60.0",
     "vite-plugin-glsl": "^1.1.2",
@@ -23,6 +26,7 @@
   },
   "dependencies": {
     "element-plus": "^2.3.1",
+    "marked": "^4.3.0",
     "openai": "^3.2.1",
     "three": "^0.150.1"
   }

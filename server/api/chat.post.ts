@@ -1,13 +1,11 @@
 import { Configuration, OpenAIApi } from 'openai'
-
+const { openaiApiKey, chatModel: model } = useRuntimeConfig()
+import stream from 'node:stream'
 const openai = new OpenAIApi(
   new Configuration({
-    apiKey: useRuntimeConfig().openaiApiKey,
+    apiKey: openaiApiKey,
   })
 )
-
-const model = 'gpt-3.5-turbo'
-
 export default defineEventHandler(async event => {
   const message: { role?: string; content?: string; clear: boolean } =
     await readBody(event)
