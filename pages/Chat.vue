@@ -20,22 +20,25 @@
         ) Q
         .flex.flex-col.gap-1(
           class='w-[calc(100%-50px)] md:gap-3 lg:w-[calc(100%-115px)]',
+          :class='{ writing: waiting && isRobot && i === messages.length - 1, answer: isRobot }',
           :ref='el => (messages[i].elm = el)'
         )
           template(v-if='!isRobot') {{ content }}
-  el-form(@submit.native='send')
+  el-form(@submit.native='send', v-if='show')
     .relative.mx-auto(class='w-3/4 lg:max-w-2xl xl:max-w-3xl')
       el-input(
         v-model='params.input',
         type='textarea',
         resize='none',
         autosize,
+        autofocus,
+        placeholder='输入内容...',
         :disabled='waiting',
         class='border-black/10 dark:border-gray-900/50 dark:text-white dark:bg-gray-700 shadow-[0_0_10px_rgba(0,0,0,0.10)] dark:shadow-[0_0_15px_rgba(0,0,0,0.10)]',
         @keydown.enter='send'
       )
-      button.absolute.p-1.rounded-md.text-gray-500.right-1(
-        class='bottom-2.5 hover:bg-gray-900',
+      button.absolute.p-1.rounded-md.text-gray-500.right-1.bottom-3(
+        class='hover:bg-gray-900',
         v-if='!waiting',
         type='submit'
       )
@@ -54,6 +57,9 @@ import { chatCompletion } from '@/api'
 import { marked } from 'marked'
 import hljs from 'highlight.js'
 import 'highlight.js/styles/foundation.css'
+useHead({
+  title: 'Chat-GPT 聊天',
+})
 
 marked.setOptions({
   highlight: (code, lang) => {
@@ -63,11 +69,13 @@ marked.setOptions({
     return hljs.highlightAuto(code).value
   },
 })
+let show = $ref(false)
 let messages = shallowReactive([])
 let params = shallowReactive({
   input: '',
 })
 let waiting = $ref(false)
+let cursor = shallowReactive({ x: 0, y: 0 })
 
 const markedContent = content =>
   marked.parse(content, {
@@ -115,6 +123,7 @@ const send = async e => {
           const messages = chunk.split(/data:|\n/).filter(s => s?.trim())
           for (const msg of messages) {
             if (/\[DONE\]/.test(msg)) {
+              waiting = false
               return
             }
             try {
@@ -126,6 +135,7 @@ const send = async e => {
               }
               info.content += delta.content
               info.elm.innerHTML = markedContent(info.content)
+              updateCursor(info.elm)
             } catch (error) {
               console.error('内容解析出错', msg, error)
             }
@@ -133,9 +143,45 @@ const send = async e => {
         }
       },
     })
+  } else {
+    waiting = false
   }
-  waiting = false
 }
+
+const getLastTextNode = el => {
+  const last = el.lastChild
+  if (!last) {
+    return last
+  }
+  if (last.nodeValue === '\n') {
+    last.remove()
+    return getLastTextNode(el)
+  }
+  if (last.nodeType === Node.TEXT_NODE) {
+    return last
+  }
+  if (last.nodeType === Node.ELEMENT_NODE) {
+    return getLastTextNode(last)
+  }
+  return last
+}
+
+const updateCursor = el => {
+  const textNode = getLastTextNode(el)
+  const parentElement = textNode ? textNode.parentElement : el
+  const cursorText = document.createTextNode('\u200B')
+  parentElement.appendChild(cursorText)
+  const domRect = el.getBoundingClientRect()
+  const range = document.createRange()
+  range.setStart(cursorText, 0)
+  range.setEnd(cursorText, 0)
+  const rect = range.getBoundingClientRect()
+  cursor.x = rect.left - domRect.left
+  cursor.y = rect.top - domRect.top
+  parentElement.removeChild(cursorText)
+}
+
+onMounted(() => (show = true))
 </script>
 <style lang="scss" scoped>
 .chat {
@@ -145,7 +191,24 @@ const send = async e => {
   &:after {
     @apply content-[''] fixed w-full h-1/5 bg-gradient-to-t from-[#00000080] left-0 bottom-0 z-[1];
   }
-
+  .answer {
+    ::v-deep(p, ol, ul) {
+      @apply mb-5;
+      &:not(:first) {
+        @apply mt-5;
+      }
+    }
+    ::v-deep(pre) {
+      @apply bg-black rounded-md mb-4 p-4 overflow-y-auto;
+    }
+  }
+  .writing {
+    @apply relative;
+    &:after {
+      @apply content-[""]  absolute w-3 h-5 bg-slate-100 opacity-0 left-[calc(v-bind('cursor.x')*1px)] top-[calc(v-bind('cursor.y')*1px)];
+      animation: opacity 1.5s infinite;
+    }
+  }
   .el-form {
     @apply mb-7 w-full flex z-10 flex-shrink-0 flex-grow-0 basis-auto;
     .spin span {
@@ -158,17 +221,17 @@ const send = async e => {
         animation-delay: 0.6s;
       }
     }
-    @keyframes opacity {
-      30% {
-        @apply opacity-100;
-      }
-    }
   }
   .el-textarea {
     @apply flex-1 flex-grow border py-2 bg-gray-700 border-gray-900/50 text-white rounded-md shadow-[0_0_15px_rgba(0,0,0,0.10)];
 
     ::v-deep(.el-textarea__inner) {
       @apply border-none shadow-none bg-transparent pr-8 text-white text-base focus:ring-0 focus-visible:ring-0;
+    }
+  }
+  @keyframes opacity {
+    30% {
+      @apply opacity-100;
     }
   }
 }

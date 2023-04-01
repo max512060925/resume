@@ -1,7 +1,7 @@
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 import glsl from 'vite-plugin-glsl'
 import { resolve } from 'path'
-import ReactivityTransform from '@vue-macros/reactivity-transform/vite'
+// import ReactivityTransform from '@vue-macros/reactivity-transform/vite'
 // https://nuxt.com/docs/api/configuration/nuxt-config
 
 export default defineNuxtConfig({
@@ -23,6 +23,9 @@ export default defineNuxtConfig({
     openaiApiKey: process.env.OPENAIKEY || '',
     chatModel: 'gpt-3.5-turbo',
   },
+  experimental: {
+    reactivityTransform: true,
+  },
   vite: {
     plugins: [
       createSvgIconsPlugin({
@@ -31,7 +34,7 @@ export default defineNuxtConfig({
         symbolId: 'icon-[dir]-[name]',
         inject: 'body-last',
       }),
-      ReactivityTransform(),
+      // ReactivityTransform(),
       glsl(),
     ],
   },
