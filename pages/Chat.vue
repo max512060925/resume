@@ -1,8 +1,8 @@
 <template lang="pug">
 .chat
-  el-scrollbar.flex-1
+  el-scrollbar.flex-1(ref='scrollbarRef')
     .w-full.border-b.text-gray-100(
-      v-for='({ role, isRobot, content, elm }, i) in messages',
+      v-for='({ isRobot, content }, i) in messages',
       class='border-gray-900/50',
       :class='isRobot ? "bg-[#444654]" : "bg-gray-800"'
     )
@@ -24,9 +24,10 @@
           :ref='el => (messages[i].elm = el)'
         )
           template(v-if='!isRobot') {{ content }}
-  el-form(@submit.native='send', v-if='show')
+  el-form(@submit.native='submit', :model='params', v-if='show')
     .relative.mx-auto(class='w-3/4 lg:max-w-2xl xl:max-w-3xl')
       el-input(
+        ref='inputRef',
         v-model='params.input',
         type='textarea',
         resize='none',
@@ -34,8 +35,8 @@
         autofocus,
         placeholder='输入内容...',
         :disabled='waiting',
-        class='border-black/10 dark:border-gray-900/50 dark:text-white dark:bg-gray-700 shadow-[0_0_10px_rgba(0,0,0,0.10)] dark:shadow-[0_0_15px_rgba(0,0,0,0.10)]',
-        @keydown.enter='send'
+        @keydown.enter='inputEnter',
+        class='border-black/10 dark:border-gray-900/50 dark:text-white dark:bg-gray-700 shadow-[0_0_10px_rgba(0,0,0,0.10)] dark:shadow-[0_0_15px_rgba(0,0,0,0.10)]'
       )
       button.absolute.p-1.rounded-md.text-gray-500.right-1.bottom-3(
         class='hover:bg-gray-900',
@@ -53,10 +54,11 @@
         span
 </template>
 <script lang="ts" setup>
+import type { ElScrollbar, ElInput } from 'element-plus'
 import { chatCompletion } from '@/api'
 import { marked } from 'marked'
 import hljs from 'highlight.js'
-import 'highlight.js/styles/foundation.css'
+import 'highlight.js/styles/atom-one-dark.css'
 useHead({
   title: 'Chat-GPT 聊天',
 })
@@ -69,6 +71,8 @@ marked.setOptions({
     return hljs.highlightAuto(code).value
   },
 })
+let scrollbarRef: typeof ElScrollbar = $ref()
+let inputRef: typeof ElInput = $ref()
 let show = $ref(false)
 let messages = shallowReactive([])
 let params = shallowReactive({
@@ -76,14 +80,35 @@ let params = shallowReactive({
 })
 let waiting = $ref(false)
 let cursor = shallowReactive({ x: 0, y: 0 })
+let scrollHeight = 0
 
+watch(
+  () => waiting,
+  val => {
+    if (!val) {
+      inputRef.focus()
+    }
+  }
+)
 const markedContent = content =>
   marked.parse(content, {
     breaks: true,
     gfm: true,
   })
-const send = async e => {
+
+const inputEnter = e => {
+  if (e.isComposing) {
+    return
+  }
+  send()
+}
+
+const submit = e => {
   e.preventDefault()
+  send()
+}
+
+const send = async () => {
   if (waiting) {
     return
   } else if (!params.input?.trim()) {
@@ -110,6 +135,7 @@ const send = async e => {
       elm: null as HTMLDivElement | null,
     }
     messages.push(info)
+    scrollHeight = scrollbarRef.wrapRef.scrollHeight
     new ReadableStream({
       async start(controller) {
         while (1) {
@@ -136,6 +162,10 @@ const send = async e => {
               info.content += delta.content
               info.elm.innerHTML = markedContent(info.content)
               updateCursor(info.elm)
+              if (scrollHeight !== scrollbarRef.wrapRef.scrollHeight) {
+                scrollHeight = scrollbarRef.wrapRef.scrollHeight
+                scrollbarRef.setScrollTop(scrollHeight)
+              }
             } catch (error) {
               console.error('内容解析出错', msg, error)
             }
@@ -150,15 +180,9 @@ const send = async e => {
 
 const getLastTextNode = el => {
   const last = el.lastChild
-  if (!last) {
-    return last
-  }
   if (last.nodeValue === '\n') {
     last.remove()
     return getLastTextNode(el)
-  }
-  if (last.nodeType === Node.TEXT_NODE) {
-    return last
   }
   if (last.nodeType === Node.ELEMENT_NODE) {
     return getLastTextNode(last)
@@ -205,7 +229,7 @@ onMounted(() => (show = true))
   .writing {
     @apply relative;
     &:after {
-      @apply content-[""]  absolute w-3 h-5 bg-slate-100 opacity-0 left-[calc(v-bind('cursor.x')*1px)] top-[calc(v-bind('cursor.y')*1px)];
+      @apply content-[""] absolute w-3 h-5 bg-slate-100 opacity-0 left-[calc(v-bind('cursor.x')*1px)] top-[calc(v-bind('cursor.y')*1px)];
       animation: opacity 1.5s infinite;
     }
   }
