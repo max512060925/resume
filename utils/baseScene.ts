@@ -52,7 +52,7 @@ export default class BaseWord {
     this.scene = new Scene()
     this.scene.background = new Color(camera?.background || '#334155') //'#cffafe'
     this.camera = new PerspectiveCamera(
-      camera?.far || 45,
+      camera?.fov || 45,
       1,
       camera?.near || 0.1,
       camera?.far || 1000
@@ -103,13 +103,14 @@ export default class BaseWord {
     this.renderer.render(this.scene, this.camera)
 
     if (box) {
-      useResizeObserver(box, () =>
-        useDebounceFn(() => {
-          this.camera.aspect = box.clientWidth / box.clientHeight
-          this.camera.updateProjectionMatrix()
-          this.renderer.setSize(box.clientWidth, box.clientHeight)
-        }, 100)
-      )
+      console.log(box)
+      const debouncedFn = useDebounceFn(() => {
+        this.camera.aspect = box.clientWidth / box.clientHeight
+        this.camera.updateProjectionMatrix()
+        this.renderer.setSize(box.clientWidth, box.clientHeight)
+      }, 100)
+
+      useResizeObserver(box, debouncedFn)
     }
   }
   animate(cb?) {

@@ -1,61 +1,79 @@
-<template lang="pug">
-.w-full.h-full
-  canvas.w-full.h-full(ref='canvas')
-</template>
-<script lang="ts" setup>
-import { Mesh, Shape, ShapeGeometry, MeshBasicMaterial } from 'three'
-import BaseWord from '@/utils/baseScene'
+<script setup lang="ts">
+import {
+  Scene,
+  PerspectiveCamera,
+  WebGLRenderer,
+  Mesh,
+  BoxGeometry,
+  MeshBasicMaterial,
+  LoadingManager,
+  TextureLoader,
+} from 'three'
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
+
+const livingPics = import.meta.glob('../../public/imgs/living/*.jpg')
+
 let canvas: HTMLCanvasElement = $ref()
 let box: HTMLDivElement = $ref()
-let floor = $ref(0)
+let loading = $ref(false)
+let width = $ref(0)
+let renderer: WebGLRenderer
+let control: OrbitControls
+const scene = new Scene() //场景
+const camera = new PerspectiveCamera(70, 1, 1, 1000) // 相机
 
-let floors = shallowReactive([])
-let currentFloor = $computed(() => floors[floor])
-const word = new BaseWord({
-  control: true,
-  camera: {
-    fov: 45,
-    near: 0.1,
-    far: 100,
-    position: [50, 50, 50],
+camera.position.z = 0.1
+
+const manger = new LoadingManager(
+  () => {
+    render()
+    width = 1
+    loading = false
   },
-  directional: {
-    color: '#fff',
-    intensity: 0.7,
-  },
-})
-const getRoomData = async () => {
-  const res: string = await $fetch(
-    'https://vr4cdn.5i5j.com/WoAiWoJia-8330701_abb8a74d-cbd1-474a-9339-b9904b2db634/ViewData.txt'
-  )
-  const data = JSON.parse(res)
-  console.log(data)
-  floors = data.Floors
-  word.start(canvas, box)
-  const shape = new Shape()
+  (url: string, loaded: number, total: number) => (width = loaded / total)
+)
 
-  currentFloor.Rooms[0].MarkPointList.forEach(({ Position }, i) =>
-    i === 0
-      ? shape.moveTo(Position.x, Position.z)
-      : shape.lineTo(Position.x, Position.z)
-  )
+const textureLoader = new TextureLoader(manger)
+let materials = []
+Object.keys(livingPics).forEach(img =>
+  materials.push(new MeshBasicMaterial({ map: textureLoader.load(img) }))
+)
+// 立方体
+const cube = new Mesh(new BoxGeometry(10, 10, 10), materials)
+cube.geometry.scale(1, 1, -1)
+scene.add(cube)
 
-  const cube = new Mesh(
-    new ShapeGeometry(shape),
-    new MeshBasicMaterial({
-      color: 0x000000,
-      transparent: true,
-    })
-  )
-  // cube.rotation.set(currentFloor.Rooms[0].Rotation)
-  cube.geometry.scale(1, 1, -1)
-  word.scene.add(cube)
-  console.log(word)
-  word.animate()
+const run = () => {
+  loading = true
+  camera.aspect = box.clientWidth / box.clientHeight
+  camera.updateProjectionMatrix()
+  control = new OrbitControls(camera, canvas) // 控制器
+  control.enableDamping = true
+  renderer = new WebGLRenderer({ canvas }) // 渲染器
+  renderer.setSize(box.clientWidth, box.clientHeight)
+  useResizeObserver(box, () => debouncedFn())
 }
-getRoomData()
+const debouncedFn = useDebounceFn(() => {
+  camera.aspect = box.clientWidth / box.clientHeight
+  camera.updateProjectionMatrix()
+  renderer.setSize(box.clientWidth, box.clientHeight)
+}, 100)
 
-const createRooms = () => {
-  // currentFloor.rooms.forEach(room =>)
+const render = () => {
+  renderer?.render(scene, camera)
+  requestAnimationFrame(render)
 }
+
+onMounted(run)
 </script>
+
+<template lang="pug">
+.w-full.h-full(ref='box')
+  canvas#webgl-canvas(ref='canvas')
+  .loading(v-if='loading')
+</template>
+<style scoped>
+.loading:after {
+  width: calc(v-bind('width') * 100%);
+}
+</style>

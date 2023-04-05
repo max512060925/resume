@@ -11,6 +11,16 @@ export default {
       //   error: 'var(--el-color-error)',
       //   info: 'var(--el-color-info)',
       // },
+      animation: {
+        toggle: 'opacity 0.9s infinite',
+      },
+      keyframe: {
+        opacity: {
+          '30%': {
+            opacity: '1',
+          },
+        },
+      },
     },
   },
   plugins: [],

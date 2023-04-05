@@ -121,6 +121,13 @@ const send = async () => {
     content: params.input,
   })
   params.input = ''
+  const info = {
+    role: '',
+    isRobot: true,
+    content: '',
+    elm: null as HTMLDivElement | null,
+  }
+  messages.push(info)
   const res = await chatCompletion(
     messages
       .filter(({ isRobot }) => !isRobot)
@@ -128,13 +135,6 @@ const send = async () => {
   )
   if (res) {
     const reader = res.getReader()
-    const info = {
-      role: '',
-      isRobot: true,
-      content: '',
-      elm: null as HTMLDivElement | null,
-    }
-    messages.push(info)
     scrollHeight = scrollbarRef.wrapRef.scrollHeight
     new ReadableStream({
       async start(controller) {
@@ -216,10 +216,14 @@ onMounted(() => (show = true))
     @apply content-[''] fixed w-full h-1/5 bg-gradient-to-t from-[#00000080] left-0 bottom-0 z-[1];
   }
   .answer {
-    ::v-deep(p, ol, ul) {
+    ::v-deep(p),
+    ::v-deep(li) {
       @apply mb-5;
       &:not(:first) {
         @apply mt-5;
+      }
+      &:last-child {
+        @apply mt-0;
       }
     }
     ::v-deep(pre) {
@@ -229,15 +233,14 @@ onMounted(() => (show = true))
   .writing {
     @apply relative;
     &:after {
-      @apply content-[""] absolute w-3 h-5 bg-slate-100 opacity-0 left-[calc(v-bind('cursor.x')*1px)] top-[calc(v-bind('cursor.y')*1px)];
-      animation: opacity 1.5s infinite;
+      @apply content-[""] absolute w-3 h-5 bg-slate-100 opacity-0 left-[calc(v-bind('cursor.x')*1px)] top-[calc(v-bind('cursor.y')*1px)] animate-[opacity_1.5s_infinite];
     }
   }
   .el-form {
     @apply mb-7 w-full flex z-10 flex-shrink-0 flex-grow-0 basis-auto;
     .spin span {
-      @apply w-1 h-1 bg-white/40 rounded-[50%] opacity-0;
-      animation: opacity 0.9s infinite;
+      @apply w-1 h-1 bg-white/40 rounded-[50%] opacity-0 animate-toggle;
+
       &:nth-child(2) {
         animation-delay: 0.3s;
       }
@@ -251,11 +254,6 @@ onMounted(() => (show = true))
 
     ::v-deep(.el-textarea__inner) {
       @apply border-none shadow-none bg-transparent pr-8 text-white text-base focus:ring-0 focus-visible:ring-0;
-    }
-  }
-  @keyframes opacity {
-    30% {
-      @apply opacity-100;
     }
   }
 }
