@@ -24,19 +24,38 @@ const word = new BaseWord({
   },
 })
 
-const loader = new FBXLoader()
-
+const spreadFragmentEffect = `
+// 半径
+float radius = distance(vPosition.xy,center);
+//  扩散范围的函数
+float spreadIndex = -pow(radius-spreadDuration, 2.)+width;
+if(spreadIndex>0.0){
+  gl_FragColor = mix(gl_FragColor,vec4(spreadColor,1),spreadIndex/width);
+}
+`
+const lineFragmentEffect = `
+float lineIndex = -pow(lineDuration-vPosition.x+vPosition.y, 2.)+width ;
+if(lineIndex>0.0){
+  gl_FragColor = mix(gl_FragColor,vec4(lineColor,1),lineIndex/width);
+}
+`
+const goTopFragmentEffect = `
+float goTopIndex = -pow(vPosition.z-lineDuration, 2.)+(width*50.0);
+if(goTopIndex>0.0){
+  gl_FragColor = mix(gl_FragColor,vec4(goTopColor,1),goTopIndex/(width*50.0));
+}
+`
 onMounted(() => {
   word.start(canvas, box)
-  loader.load('/models/city.fbx', object => {
+  new FBXLoader().load('/models/city.fbx', object => {
     object.traverse((item: Mesh) => {
       if (item.isMesh) {
         item.geometry.computeBoundingBox()
-        // item.material
         const { min, max } = item.geometry.boundingBox
         const diffH = max.y - min.y
         item.material = new MeshBasicMaterial({
           color: new Color('#22c55e'),
+          transparent: true,
         })
         item.material.onBeforeCompile = shader => {
           // console.log(shader.vertexShader)
@@ -50,10 +69,14 @@ onMounted(() => {
           // 设置扩散的中心点
           shader.uniforms.center = { value: new Vector2(0, 0) }
           //   扩散的时间
-          shader.uniforms.duration = { value: -2 * 100 }
+          shader.uniforms.spreadDuration = { value: 0 }
           //   设置条带的宽度
           shader.uniforms.width = { value: 40 }
           shader.uniforms.spreadColor = { value: new Color('#ef4444') }
+          //
+          shader.uniforms.lineDuration = { value: -700 }
+          shader.uniforms.lineColor = { value: new Color('#c026d3') }
+          shader.uniforms.goTopColor = { value: new Color('#bbf7d0') }
           shader.vertexShader = `
             varying vec3 vPosition;
             ${shader.vertexShader}
@@ -70,9 +93,12 @@ onMounted(() => {
           uniform float diffHeight;
           uniform vec3 topColor;
           uniform vec2 center;
-          uniform float duration;
+          uniform float spreadDuration;
           uniform float width;
           uniform vec3 spreadColor;
+          uniform float lineDuration;
+          uniform vec3 lineColor;
+          uniform vec3 goTopColor;
           ${shader.fragmentShader}
           `
           shader.fragmentShader = shader.fragmentShader.replace(
@@ -81,19 +107,20 @@ onMounted(() => {
             #include <dithering_fragment>
             // 混合颜色
             gl_FragColor = vec4(mix(gl_FragColor.xyz,topColor,(vPosition.z+diffHeight/2.)/diffHeight),1);
-            // 扩散效果
-            // 半径
-            float radius = distance(vPosition.xy,center);
-            //  扩散范围的函数
-            float spreadIndex = -pow(radius-duration, 2.)+width;
-            if(spreadIndex>0.0){
-              gl_FragColor = mix(gl_FragColor,vec4(spreadColor,1),spreadIndex/width);
-            }
+            ${spreadFragmentEffect}
+            ${lineFragmentEffect}
+            ${goTopFragmentEffect}
           `
           )
-          gsap.to(shader.uniforms.duration, {
-            value: 150,
-            duration: 2,
+          gsap.to(shader.uniforms.spreadDuration, {
+            value: 1000,
+            duration: 3,
+            ease: 'none',
+            repeat: -1,
+          })
+          gsap.to(shader.uniforms.lineDuration, {
+            value: 1000,
+            duration: 5,
             ease: 'none',
             repeat: -1,
           })

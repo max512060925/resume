@@ -51,7 +51,7 @@ useHead({
     h1 {
       @apply text-transparent mx-auto my-5 text-5xl inline-block relative overflow-hidden animate-[word_0.7s_ease-in-out_forwards] will-change-[color];
       &:before {
-        @apply content-[''] absolute block w-[200%] h-full bg-amber-200 will-change-transform animate-[word-light_0.8s_ease-in-out_forwards];
+        @apply content-[''] absolute block w-[200%] h-full bg-amber-200 will-change-transform translate-x-[-100%] animate-[to-right-hide_0.8s_ease-in-out_forwards];
       }
       &:last-child:after {
         @apply content-['|'] animate-toggle opacity-0;
@@ -59,19 +59,8 @@ useHead({
     }
   }
   @keyframes word {
-    0% {
-      @apply text-transparent;
-    }
     100% {
       @apply text-white;
-    }
-  }
-  @keyframes word-light {
-    0% {
-      transform: translateX(-100%);
-    }
-    100% {
-      transform: translateX(100%);
     }
   }
 }

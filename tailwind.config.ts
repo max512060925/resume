@@ -20,6 +20,11 @@ export default {
             opacity: '1',
           },
         },
+        'to-right-hide': {
+          '100%': {
+            transform: 'translateX(100%)',
+          },
+        },
       },
     },
   },
