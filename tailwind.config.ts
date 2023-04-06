@@ -14,7 +14,7 @@ export default {
       animation: {
         toggle: 'opacity 0.9s infinite',
       },
-      keyframe: {
+      keyframes: {
         opacity: {
           '30%': {
             opacity: '1',

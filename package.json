@@ -15,7 +15,7 @@
     "@types/node": "^18.15.11",
     "@types/three": "^0.150.1",
     "@volar/vue-language-plugin-pug": "^1.2.0",
-    "@vue-macros/reactivity-transform": "^0.3.3",
+    "@vue-macros/reactivity-transform": "^0.3.4",
     "@vueuse/core": "^9.13.0",
     "@vueuse/nuxt": "^9.13.0",
     "nuxt": "^3.3.3",
