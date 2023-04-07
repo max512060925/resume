@@ -2,19 +2,27 @@
 .resume
   .page
     .mine
-      //- img.z-10.absolute.z-10(
-      //-   src='~/assets/img/mine.png',
-      //-   class='rounded-[50%] w-[180px] h-[180px] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'
-      //- )
+      img.z-10.absolute(
+        src='~/assets/img/mine.png',
+        class='rounded-[50%] w-[180px] h-[180px] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'
+      )
       .linear
         span(v-for='n in 4')
     .info.flex.flex-col
-      //- h1 Hello~ 你好!
-      //- h1 我是姚彦斌
-      //- h1 一名有着8年前端开发经验的开发者
-  .page(ref='skill')
-    h1.text-white 1212
-    h1 工作技能
+      h1 Hello~ 你好!
+      h1 我是姚彦斌
+      h1 一名有着8年前端开发经验的开发者
+  .page.py-10.flex.flex-col(ref='skill')
+    h1.text-white.text-5xl.mb-5 工作技能
+    .flex-1.w-full.h-0(ref='skillRender')
+      template(v-for='item in skills')
+        img.h-24(
+          v-show='showSkill',
+          ref='skillRefs',
+          :src='`${cdnURL || buildAssetsDir}assets/${["vant", "taro"].includes(item) ? `img/${item}.png` : `icon/${item}.svg`}`'
+        )
+    ul.text-white.mt-5
+      li.my-1.text-base(v-for='txt in skillsText') {{ txt }}
   .page
     h1.text-white 333
     h1 工作经历
@@ -23,25 +31,148 @@
 //- NuxtLink(to='/fireword') fireword
 </template>
 <script lang="ts" setup>
+import { PerspectiveCamera, Scene, Object3D, Vector3 } from 'three'
+import {
+  CSS3DRenderer,
+  CSS3DObject,
+} from 'three/examples/jsm/renderers/CSS3DRenderer.js'
+import { TrackballControls } from 'three/examples/jsm/controls/TrackballControls.js'
+import gsap from 'gsap'
+
 useHead({
   title: '姚彦斌的个人简历',
 })
-//-       我是一名有着10年前端开发经验的开发者，经历了多个项目的开发、迭代和维护。在这10年的职业生涯中，我积累了丰富的技术和管理经验，取得了一系列优秀的成果。
+const {
+  payload: {
+    config: {
+      app: { buildAssetsDir, cdnURL },
+    },
+  },
+} = useNuxtApp()
 
-//- 在早期的职业生涯中，我主要负责开发基于 HTML、CSS和JavaScript的网页。通过深入钻研JavaScript和jQuery等前端框架，我开发了许多交互性强、用户体验优秀的网站。同时也学习了node.js、Vue.js等新技术并运用到实际开发中，提升了我的开发效率和代码质量。
-
-//- 后来，我参与了一些大型的项目，担任前端架构师和团队经理的角色。我带领团队完成了多个复杂的产品，并在开发流程中不断改善、优化，提高项目的质量和效率。在这些项目中，我提出了许多创新性的解决方案，例如采用React框架和Webpack工具优化开发流程等，都取得了非常好的效果。
-
-//- 此外，我也在个人时间里持续学习和不断拓展自己的技术和管理知识，例如学习了iOS和Android开发知识，理解和应用了敏捷开发方法论和Scrum项目管理方法等，这些经验和知识让我在职业生涯中更加成功和领导力强。
-
-//- 总的来说，我的10年经历充满了挑战和成就，我具备深厚的前端技术和全面的管理能力，期待着把这些经验和能力应用到新的职业发展中。
 let skill: HTMLDivElement = $ref()
+let skillRender: HTMLDivElement = $ref()
+let skillRefs: HTMLImageElement[] = $ref([])
+let showSkill = $ref(false)
+let skillsText = [
+  '熟练掌握HTML/CSS/JavaScript/Typescript',
+  '熟悉常用前端工程化工具Gulp/Grunt/Webpack/Parcel/Vite，掌握模块化思想和技术实现方案',
+  '熟练掌握Photoshop、 sketch等设计软件，能独立完成产品功能的交互界面设计',
+  '精通Vue2和Vue3，会应用Vue生态常用工具，如vue-router/pinia/vuex',
+  '精通Vue常用UI框架，如element-ui/element-plus/vant',
+  '熟悉React前端框架，会应用react 16+生态常用工具，如redux/react-router',
+  '熟悉React常用UI框架，如Ant Design',
+  '熟练使用CSS预编译语言，掌握tailwindcss/SASS/LESS预编译语言等',
+  '熟悉计算机网络理论，掌握基于XHR(Axios)/Fetch的前端应用开发经验，会熟练使用Axios(Axios)/Fetch等网络请求库',
+  '熟悉图形学和webgl，熟练使用threejs框架，熟练canvas相关渲染及动画操作',
+  '具有小程序(uniapp,taro)、移动端混合开发、SSR、NodeJS、开发经验',
+  '会使用sequelize、mongodb操作常见数据库',
+  '有良好的编码习惯，对前端技术有持续的热情，个性乐观开朗,逻辑性强，善于与团队融为一体',
+]
+
 let intersectionObserver
+
+const skills = [
+  'html',
+  'css',
+  'js',
+  'node',
+  'typescript',
+  'vite',
+  'webpack',
+  'vue',
+  'pinia',
+  'nuxt',
+  'react',
+  'redux',
+  'tailwindcss',
+  'element-plus',
+  'vant',
+  'antd',
+  'antv',
+  'uniapp',
+  'taro',
+  'electron',
+  'sequelize',
+  'mongo',
+  'jenkins',
+]
+
+const skillsAnimation = () => {
+  const renderer = new CSS3DRenderer({ element: skillRender })
+  const width = skillRender.clientWidth
+  const height = skillRender.clientHeight
+  renderer.setSize(width, height)
+  const camera = new PerspectiveCamera(40, width / height, 1, 1000)
+  camera.position.z = 3000
+  const scene = new Scene()
+  const controls = new TrackballControls(camera, renderer.domElement)
+  controls.minDistance = 500
+  controls.maxDistance = 6000
+  controls.noZoom = true
+  const render = () => renderer.render(scene, camera)
+  controls.addEventListener('change', render)
+
+  const length = skillRefs.length
+  const vector = new Vector3()
+  const targets = skillRefs.map((el, i) => {
+    const objectCSS = new CSS3DObject(el)
+    objectCSS.position.x = (Math.random() - 0.5) * width
+    objectCSS.position.y = (Math.random() - 0.5) * height
+    objectCSS.position.z = (Math.random() - 0.5) * 500
+    scene.add(objectCSS)
+    const object = new Object3D()
+    const phi = Math.acos(-1 + (2 * i) / length)
+    const theta = Math.sqrt(length * Math.PI) * phi
+    object.position.setFromSphericalCoords(height, phi, theta)
+    vector.copy(object.position).multiplyScalar(2)
+    object.lookAt(vector)
+    return {
+      objectCSS,
+      object,
+    }
+  })
+
+  return {
+    controls,
+    targets,
+    render,
+  }
+}
+const transform = (targets, duration) => {
+  targets.forEach(({ objectCSS, object }) => {
+    gsap.to(objectCSS.position, {
+      x: object.position.x,
+      y: object.position.y,
+      z: object.position.z,
+      duration: Math.random() * duration + duration,
+    })
+    gsap.to(objectCSS.rotation, {
+      x: object.rotation.x,
+      y: object.rotation.y,
+      z: object.rotation.z,
+      duration: Math.random() * duration + duration,
+    })
+  })
+}
+let animationId
+
+const animate = (controls, targets, render) => {
+  animationId = requestAnimationFrame(() => animate(controls, targets, render))
+  transform(targets, 2)
+  controls.update()
+  render()
+}
+
 onMounted(() => {
+  const { controls, targets, render } = skillsAnimation()
   intersectionObserver = useIntersectionObserver(
     skill,
     ([{ isIntersecting }]) => {
-      console.log(isIntersecting)
+      showSkill = isIntersecting
+      isIntersecting
+        ? animate(controls, targets, render)
+        : cancelAnimationFrame(animationId)
     }
   )
 })
@@ -57,10 +188,10 @@ onUnmounted(() => intersectionObserver?.stop())
     @apply w-0;
   }
   .page {
-    @apply w-screen h-screen snap-start snap-always flex flex-col items-center justify-center;
+    @apply w-screen h-screen snap-start snap-always flex flex-col items-center justify-center overflow-hidden relative;
   }
   .mine {
-    @apply relative mx-auto w-[190px] h-[190px] z-10 mb-8;
+    @apply relative mx-auto w-[190px] h-[190px] z-10 mb-16;
     .linear {
       @apply absolute linear-gradient w-full h-full rounded-[50%] animate-spin;
       span {
