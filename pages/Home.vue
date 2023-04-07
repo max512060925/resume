@@ -89,7 +89,7 @@ const skills = [
   'mongo',
   'jenkins',
 ]
-
+const duration = 2
 const skillsAnimation = () => {
   const renderer = new CSS3DRenderer({ element: skillRender })
   const width = skillRender.clientWidth
@@ -109,9 +109,14 @@ const skillsAnimation = () => {
   const vector = new Vector3()
   const targets = skillRefs.map((el, i) => {
     const objectCSS = new CSS3DObject(el)
-    objectCSS.position.x = (Math.random() - 0.5) * width
-    objectCSS.position.y = (Math.random() - 0.5) * height
-    objectCSS.position.z = (Math.random() - 0.5) * 500
+    const base = {
+      x: (Math.random() - 0.5) * width,
+      y: (Math.random() - 0.5) * height,
+      z: (Math.random() - 0.5) * 500,
+    }
+    objectCSS.position.x = base.x
+    objectCSS.position.y = base.y
+    objectCSS.position.z = base.z
     scene.add(objectCSS)
     const object = new Object3D()
     const phi = Math.acos(-1 + (2 * i) / length)
@@ -119,9 +124,13 @@ const skillsAnimation = () => {
     object.position.setFromSphericalCoords(height, phi, theta)
     vector.copy(object.position).multiplyScalar(2)
     object.lookAt(vector)
+
     return {
       objectCSS,
       object,
+      base,
+      positon: null,
+      rotation: null,
     }
   })
 
@@ -131,31 +140,42 @@ const skillsAnimation = () => {
     render,
   }
 }
-const transform = (targets, duration) => {
-  targets.forEach(({ objectCSS, object }) => {
-    gsap.to(objectCSS.position, {
+const transform = targets => {
+  targets.forEach(item => {
+    const { objectCSS, object } = item
+    item.positon = gsap.fromTo(objectCSS.position, objectCSS.position, {
       x: object.position.x,
       y: object.position.y,
       z: object.position.z,
       duration: Math.random() * duration + duration,
     })
-    gsap.to(objectCSS.rotation, {
+    item.rotation = gsap.fromTo(objectCSS.rotation, objectCSS.rotation, {
       x: object.rotation.x,
       y: object.rotation.y,
       z: object.rotation.z,
       duration: Math.random() * duration + duration,
     })
+    item.positon.play()
   })
 }
 let animationId
 
 const animate = (controls, targets, render) => {
   animationId = requestAnimationFrame(() => animate(controls, targets, render))
-  transform(targets, 2)
+  transform(targets)
   controls.update()
   render()
 }
-
+const cancel = (controls, targets, render) => {
+  cancelAnimationFrame(animationId)
+  targets.forEach(({ objectCSS, base }) => {
+    gsap.set(objectCSS.position, base)
+    gsap.set(objectCSS.rotation, { x: 0, y: 0, z: 0 })
+  })
+  transform(targets)
+  controls.update()
+  render()
+}
 onMounted(() => {
   const { controls, targets, render } = skillsAnimation()
   intersectionObserver = useIntersectionObserver(
@@ -164,7 +184,7 @@ onMounted(() => {
       showSkill = isIntersecting
       isIntersecting
         ? animate(controls, targets, render)
-        : cancelAnimationFrame(animationId)
+        : cancel(controls, targets, render)
     }
   )
 })
