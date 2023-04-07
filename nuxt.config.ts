@@ -27,9 +27,14 @@ export default defineNuxtConfig({
     reactivityTransform: true,
   },
   vite: {
+    resolve: {
+      alias: {
+        '@': resolve(process.cwd()),
+      },
+    },
     plugins: [
       createSvgIconsPlugin({
-        iconDirs: [resolve(process.cwd(), 'assets/icon')],
+        iconDirs: [resolve(process.cwd(), 'public/icon')],
         // Specify symbolId format
         symbolId: 'icon-[dir]-[name]',
         inject: 'body-last',

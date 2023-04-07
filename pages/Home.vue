@@ -19,13 +19,12 @@
         img.h-24(
           v-show='showSkill',
           ref='skillRefs',
-          :src='`${cdnURL || buildAssetsDir}assets/${["vant", "taro"].includes(item) ? `img/${item}.png` : `icon/${item}.svg`}`'
+          :src='["vant", "taro"].includes(item) ? `/img/${item}.png` : `/icon/${item}.svg`'
         )
     ul.text-white.mt-5
       li.my-1.text-base(v-for='txt in skillsText') {{ txt }}
   .page
-    h1.text-white 333
-    h1 工作经历
+    h1.text-white.text-5xl.mb-5 工作经历
 //- NuxtLink(to='/3D/Keqing') 刻晴
 //- NuxtLink(to='/About') about
 //- NuxtLink(to='/fireword') fireword
@@ -42,13 +41,6 @@ import gsap from 'gsap'
 useHead({
   title: '姚彦斌的个人简历',
 })
-const {
-  payload: {
-    config: {
-      app: { buildAssetsDir, cdnURL },
-    },
-  },
-} = useNuxtApp()
 
 let skill: HTMLDivElement = $ref()
 let skillRender: HTMLDivElement = $ref()
