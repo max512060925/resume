@@ -2,7 +2,12 @@
 .resume
   .page.pt-10
     .mine
-      img(src='~/assets/img/mine.png', class='rounded-[50%] w-[180px] h-[180px]')
+      img.z-10.absolute.z-10(
+        src='~/assets/img/mine.png',
+        class='rounded-[50%] w-[180px] h-[180px] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'
+      )
+      .linear
+        span(v-for='n in 4')
     .info.flex.flex-col
       h1 Hello~ 你好!
       h1 我是姚彦斌
@@ -28,6 +33,9 @@ useHead({
 //- 总的来说，我的10年经历充满了挑战和成就，我具备深厚的前端技术和全面的管理能力，期待着把这些经验和能力应用到新的职业发展中。
 </script>
 <style lang="scss" scoped>
+.linear-gradient {
+  @apply bg-gradient-to-b from-sky-400 via-amber-200 to-fuchsia-500;
+}
 .resume {
   @apply w-screen h-screen overflow-y-scroll scroll-smooth snap-y snap-mandatory bg-[rgb(15,12,42)];
   &::-webkit-scrollbar {
@@ -37,9 +45,24 @@ useHead({
     @apply w-screen h-screen snap-start snap-always;
   }
   .mine {
-    @apply mx-auto overflow-hidden flex items-center justify-center rounded-[50%] w-[190px] h-[190px] relative;
-    &:after {
-      @apply content-[''] absolute w-full h-full left-1/2 top-1/2 z-[-1] bg-gradient-to-r from-green-400 to-blue-500 origin-top-left animate-spin;
+    @apply relative mx-auto w-[190px] h-[190px];
+    .linear {
+      @apply absolute linear-gradient w-full h-full rounded-[50%] animate-spin;
+      span {
+        @apply absolute w-full h-full rounded-[50%] linear-gradient;
+        &:nth-child(2) {
+          @apply blur-[5px];
+        }
+        &:nth-child(3) {
+          @apply blur-[10px];
+        }
+        &:nth-child(4) {
+          @apply blur-[25px];
+        }
+        &:nth-child(5) {
+          @apply blur-[50px];
+        }
+      }
     }
     &:hover {
       &:after {
