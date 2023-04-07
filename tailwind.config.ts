@@ -22,10 +22,10 @@ export default {
         },
         'to-right-hide': {
           '0%': {
-            transform: 'translateX(-50%)',
+            transform: 'translateX(-51%)',
           },
           '100%': {
-            transform: 'translateX(50%)',
+            transform: 'translateX(51%)',
           },
         },
       },

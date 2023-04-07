@@ -1,19 +1,23 @@
 <template lang="pug">
 .resume
-  .page.pt-10
+  .page
     .mine
-      img.z-10.absolute.z-10(
-        src='~/assets/img/mine.png',
-        class='rounded-[50%] w-[180px] h-[180px] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'
-      )
+      //- img.z-10.absolute.z-10(
+      //-   src='~/assets/img/mine.png',
+      //-   class='rounded-[50%] w-[180px] h-[180px] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'
+      //- )
       .linear
         span(v-for='n in 4')
     .info.flex.flex-col
-      h1 Hello~ 你好!
-      h1 我是姚彦斌
-      h1 一名有着8年前端开发经验的开发者
-  .page 1
-  .page 2
+      //- h1 Hello~ 你好!
+      //- h1 我是姚彦斌
+      //- h1 一名有着8年前端开发经验的开发者
+  .page(ref='skill')
+    h1.text-white 1212
+    h1 工作技能
+  .page
+    h1.text-white 333
+    h1 工作经历
 //- NuxtLink(to='/3D/Keqing') 刻晴
 //- NuxtLink(to='/About') about
 //- NuxtLink(to='/fireword') fireword
@@ -31,6 +35,17 @@ useHead({
 //- 此外，我也在个人时间里持续学习和不断拓展自己的技术和管理知识，例如学习了iOS和Android开发知识，理解和应用了敏捷开发方法论和Scrum项目管理方法等，这些经验和知识让我在职业生涯中更加成功和领导力强。
 
 //- 总的来说，我的10年经历充满了挑战和成就，我具备深厚的前端技术和全面的管理能力，期待着把这些经验和能力应用到新的职业发展中。
+let skill: HTMLDivElement = $ref()
+let intersectionObserver
+onMounted(() => {
+  intersectionObserver = useIntersectionObserver(
+    skill,
+    ([{ isIntersecting }]) => {
+      console.log(isIntersecting)
+    }
+  )
+})
+onUnmounted(() => intersectionObserver?.stop())
 </script>
 <style lang="scss" scoped>
 .linear-gradient {
@@ -39,13 +54,13 @@ useHead({
 .resume {
   @apply w-screen h-screen overflow-y-scroll scroll-smooth snap-y snap-mandatory bg-[rgb(15,12,42)];
   &::-webkit-scrollbar {
-    width: 0;
+    @apply w-0;
   }
   .page {
-    @apply w-screen h-screen snap-start snap-always;
+    @apply w-screen h-screen snap-start snap-always flex flex-col items-center justify-center;
   }
   .mine {
-    @apply relative mx-auto w-[190px] h-[190px];
+    @apply relative mx-auto w-[190px] h-[190px] z-10 mb-8;
     .linear {
       @apply absolute linear-gradient w-full h-full rounded-[50%] animate-spin;
       span {
@@ -65,7 +80,7 @@ useHead({
       }
     }
     &:hover {
-      &:after {
+      .linear {
         animation-play-state: paused;
       }
     }
@@ -73,9 +88,8 @@ useHead({
   .info {
     h1 {
       @apply text-white mx-auto my-5 text-5xl inline-block relative overflow-hidden;
-
       &:before {
-        @apply content-[''] absolute block w-[200%] h-full bg-gradient-to-r from-amber-200 from-50% via-[rgb(15,12,42)] via-[50.01%] to-[rgb(15,12,42)] to-100% will-change-transform translate-x-[-50%] animate-[to-right-hide_1.2s_ease-in-out_both];
+        @apply content-[''] absolute block w-[200%] h-full bg-gradient-to-r from-amber-200 from-[49.99%] via-[rgb(15,12,42)] via-[49.99%] to-[rgb(15,12,42)] to-100% will-change-transform translate-x-[-50%] animate-[to-right-hide_1.2s_ease-in-out_both];
       }
       &:last-child:after {
         @apply content-['|'] animate-toggle opacity-0;
