@@ -54,10 +54,10 @@ let skillsText = [
   '精通Vue常用UI框架，如element-ui/element-plus/vant',
   '熟悉React前端框架，会应用react 16+生态常用工具，如redux/react-router',
   '熟悉React常用UI框架，如Ant Design',
-  '熟练使用CSS预编译语言，掌握tailwindcss/SASS/LESS预编译语言等',
-  '熟悉计算机网络理论，掌握基于XHR(Axios)/Fetch的前端应用开发经验，会熟练使用Axios(Axios)/Fetch等网络请求库',
+  '熟练使用CSS预编译语言，掌握tailwindcss/sass/less预编译语言等',
+  '熟悉计算机网络理论，掌握基于XHR(axios)/Fetch的前端应用开发经验，会熟练使用XHR(axios)/Fetch等网络请求库',
   '熟悉图形学和webgl，熟练使用threejs框架，熟练canvas相关渲染及动画操作',
-  '具有小程序(uniapp,taro)、移动端混合开发、SSR、NodeJS、开发经验',
+  '具有小程序(uniapp,taro)、移动端混合开发、SSR、NodeJS、桌面应用(electron)开发经验',
   '会使用sequelize、mongodb操作常见数据库',
   '有良好的编码习惯，对前端技术有持续的热情，个性乐观开朗,逻辑性强，善于与团队融为一体',
 ]
