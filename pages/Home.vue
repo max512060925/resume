@@ -58,7 +58,7 @@ let skillsText = [
   '熟悉计算机网络理论，掌握基于XHR(axios)/Fetch的前端应用开发经验，会熟练使用XHR(axios)/Fetch等网络请求库',
   '熟悉图形学和webgl，熟练使用threejs框架，熟练canvas相关渲染及动画操作',
   '具有小程序(uniapp,taro)、移动端混合开发、SSR、NodeJS、桌面应用(electron)开发经验',
-  '会使用sequelize、mongodb操作常见数据库',
+  '会使用sequelize、mongoose操作常见数据库',
   '有良好的编码习惯，对前端技术有持续的热情，个性乐观开朗,逻辑性强，善于与团队融为一体',
 ]
 
