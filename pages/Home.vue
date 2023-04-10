@@ -73,6 +73,7 @@ const skills = [
   'vite',
   'webpack',
   'vue',
+  'vueuse',
   'pinia',
   'nuxt',
   'react',
@@ -89,7 +90,7 @@ const skills = [
   'mongo',
   'jenkins',
 ]
-const duration = 2
+const duration = 3
 const skillsAnimation = () => {
   const renderer = new CSS3DRenderer({ element: skillRender })
   const width = skillRender.clientWidth
