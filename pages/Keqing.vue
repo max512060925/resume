@@ -155,7 +155,6 @@ onMounted(async () => {
 })
 
 manager.onProgress = (url, loaded, total) => {
-  console.log(url)
   percentage = loaded / total
 }
 </script>

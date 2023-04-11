@@ -103,7 +103,6 @@ export default class BaseWord {
     this.renderer.render(this.scene, this.camera)
 
     if (box) {
-      console.log(box)
       const debouncedFn = useDebounceFn(() => {
         this.camera.aspect = box.clientWidth / box.clientHeight
         this.camera.updateProjectionMatrix()

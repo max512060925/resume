@@ -10,6 +10,7 @@ import {
   Audio,
   AudioLoader,
 } from 'three'
+import type { ColorRepresentation } from 'three'
 import pointVertex from '@/shaders/point/vertex.glsl'
 import pointFragment from '@/shaders/point/fragment.glsl'
 import fireVertex from '@/shaders/fire/vertex.glsl'
@@ -25,7 +26,11 @@ export default class Firework {
   boomSound: Audio
 
   isBoomed: boolean
-  constructor(color: string, to: [number, number, number], from = [0, 0, 0]) {
+  constructor(
+    color: ColorRepresentation,
+    to: [number, number, number],
+    from = [0, 0, 0]
+  ) {
     this.color = new Color(color)
     this.point = new Points(
       new BufferGeometry(),

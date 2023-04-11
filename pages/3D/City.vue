@@ -5,6 +5,7 @@
 <script lang="ts" setup>
 import { Vector3, Mesh, MeshBasicMaterial, Color, Vector2 } from 'three'
 import BaseWord from '@/utils/baseScene'
+import Flyline from '@/utils/flyLine'
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js'
 import gsap from 'gsap'
 
@@ -130,6 +131,16 @@ onMounted(() => {
     const scale = 0.05
     object.scale.copy(new Vector3(scale, scale, scale))
     word.scene.add(object)
+
+    word.scene.add(
+      new Flyline([
+        [0, 0, -20],
+        [0, 8, -15],
+        [0, 10, -10],
+        [0, 8, -5],
+        [0, 0, 0],
+      ])
+    )
     word.animate()
   })
 })
