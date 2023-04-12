@@ -7,6 +7,7 @@ import {
   TextureLoader,
   RepeatWrapping,
   MirroredRepeatWrapping,
+  AdditiveBlending,
 } from 'three'
 import gsap from 'gsap'
 export default class Flyline extends Mesh {
@@ -20,7 +21,6 @@ export default class Flyline extends Mesh {
       2,
       false
     )
-
     const texture = new TextureLoader().load('/textures/city/arrow.png')
     texture.repeat.setY(2)
     texture.wrapS = RepeatWrapping
@@ -28,6 +28,8 @@ export default class Flyline extends Mesh {
     this.material = new MeshBasicMaterial({
       map: texture,
       transparent: true,
+      depthWrite: false,
+      blending: AdditiveBlending,
     })
     this.position.set(0, 1.5, 0)
 

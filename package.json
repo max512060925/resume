@@ -21,7 +21,7 @@
     "nuxt": "^3.3.3",
     "postcss": "^8.4.21",
     "pug": "^3.0.2",
-    "sass": "^1.61.0",
+    "sass": "^1.62.0",
     "vite-plugin-glsl": "^1.1.2",
     "vite-plugin-svg-icons": "^2.0.1"
   },
