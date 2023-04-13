@@ -6,6 +6,7 @@
 import { Vector3, Mesh, MeshBasicMaterial, Color, Vector2 } from 'three'
 import BaseWord from '@/utils/baseScene'
 import Flyline from '@/utils/flyLine'
+import MeshLine from '@/utils/meshLine'
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js'
 import gsap from 'gsap'
 
@@ -46,6 +47,7 @@ if(goTopIndex>0.0){
   gl_FragColor = mix(gl_FragColor,vec4(goTopColor,1),goTopIndex/(width*50.0));
 }
 `
+
 onMounted(() => {
   word.start(canvas, box)
   new FBXLoader().load('/models/city.fbx', object => {
@@ -131,6 +133,13 @@ onMounted(() => {
     const scale = 0.05
     object.scale.copy(new Vector3(scale, scale, scale))
     word.scene.add(object)
+    const build = word.scene.getObjectByName('Layerbuildings') as Mesh
+    const line = new MeshLine(build.geometry)
+    line.rotateX(-Math.PI / 2)
+    const lineScale = scale * 1.005
+    line.scale.copy(new Vector3(lineScale, lineScale, lineScale))
+    line.position.y = build.position.y * lineScale
+    word.scene.add(line)
 
     word.scene.add(
       new Flyline([

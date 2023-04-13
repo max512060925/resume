@@ -9,14 +9,16 @@ component(:is='isMobile ? mobileResume : pcResume')
 </template>
 <script lang="ts" setup>
 import pcResume from '~/pc/Resume.vue'
-import mobileResume from '~/pc/Resume.vue'
+import mobileResume from '~/mobile/Resume.vue'
 let show = $ref(false)
-const userAgent = useRequestHeaders(['user-agent'])
-console.log(userAgent)
-const isMobile = /(Android|webOS|iPhone|iPod|tablet|BlackBerry|Mobile)/i.test(
-  userAgent['user-agent']
-)
-console.log(isMobile)
+const nuxtApp = useNuxtApp()
+
+if (process.server) {
+  const event = useRequestEvent()
+  nuxtApp.payload.data.isMobile = event.context.isMobile
+}
+const { isMobile } = nuxtApp.payload.data
+// console.log(isMobile)
 </script>
 <style lang="scss" scoped>
 .test {
