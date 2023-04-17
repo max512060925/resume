@@ -3,7 +3,6 @@ import glsl from 'vite-plugin-glsl'
 import { resolve } from 'path'
 // import ReactivityTransform from '@vue-macros/reactivity-transform/vite'
 // https://nuxt.com/docs/api/configuration/nuxt-config
-
 export default defineNuxtConfig({
   app: {
     head: {
@@ -14,18 +13,26 @@ export default defineNuxtConfig({
     rootId: 'root',
     rootTag: 'section',
   },
-  css: ['@/assets/style/tailwind.css', '@/assets/style/index.scss'],
-  modules: ['@element-plus/nuxt', '@vueuse/nuxt', '@nuxtjs/tailwindcss'],
+  css: ['@unocss/reset/tailwind.css', '@/assets/style/index.scss'],
+  modules: ['@element-plus/nuxt', '@vueuse/nuxt', '@unocss/nuxt'],
   elementPlus: {
     importStyle: 'scss',
   },
   runtimeConfig: {
-    openaiApiKey: process.env.OPENAIKEY || '',
-    chatModel: 'gpt-3.5-turbo',
+    openaiApiKey: '',
+    chatModel: '',
+    mysql: {
+      host: process.env.MYSQL_HOST || 'maxwinnie.xyz',
+      port: process.env.MYSQL_PORT || 3306,
+      database: process.env.MYSQL_DATABASE || 'myDB',
+      username: process.env.MYSQL_USERNAME || 'root',
+      password: process.env.MYSQL_MASSWORD || '941722Zxc!',
+    },
   },
   experimental: {
     reactivityTransform: true,
   },
+  nitro: {},
   vite: {
     resolve: {
       alias: {
