@@ -7,19 +7,26 @@ const openai = new OpenAIApi(
   })
 )
 export default defineEventHandler(async event => {
-  const messages: {
-    role: ChatCompletionRequestMessageRoleEnum
-    content: string
-  }[] = await readBody(event)
-  const res = await openai.createChatCompletion(
-    {
-      model,
-      messages,
-      stream: true,
-    },
-    {
-      responseType: 'stream',
+  try {
+    const messages: {
+      role: ChatCompletionRequestMessageRoleEnum
+      content: string
+    }[] = await readBody(event)
+    const res = await openai.createChatCompletion(
+      {
+        model,
+        messages,
+        stream: true,
+      },
+      {
+        responseType: 'stream',
+      }
+    )
+    return sendStream(event, res.data)
+  } catch (error) {
+    return {
+      code: 500,
+      msg: error,
     }
-  )
-  return sendStream(event, res.data)
+  }
 })

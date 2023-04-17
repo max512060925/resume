@@ -24,7 +24,7 @@ const mouseleave = () => {
 </script>
 <style lang="scss" scoped>
 .card {
-  @apply relative aspect-[v-bind(ratio)] rounded-[10px] overflow-hidden shadow-[rgb(0_0_0/0.66)_0_30px_60px_0] duration-1000 ease-[cubic-bezier(0.445,0.05,0.55,0.95)] cursor-pointer;
+  @apply rounded-[16px] overflow-hidden shadow-[rgb(0_0_0/0.66)_0_30px_60px_0] duration-1000 ease-[cubic-bezier(0.445,0.05,0.55,0.95)] cursor-pointer;
   transform: rotateX(calc(v-bind('move.x') * -20deg))
     rotateY(calc(v-bind('move.y') * -20deg));
   &:hover {
@@ -36,7 +36,7 @@ const mouseleave = () => {
     }
   }
   .content {
-    @apply text-white w-full h-full absolute -top-[20px] -left-[20px] p-5 
+    @apply text-white w-full h-full
     duration-1000 ease-[cubic-bezier(0.445,0.05,0.55,0.95)] 
     translate-x-[calc(v-bind('move.x')*20px)] translate-y-[calc(v-bind('move.y')*20px)];
   }
