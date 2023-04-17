@@ -6,6 +6,7 @@
 import { Vector3, Mesh, MeshBasicMaterial, Color, Vector2 } from 'three'
 import BaseWord from '@/utils/baseScene'
 import Flyline from '@/utils/flyLine'
+import FlyLineShader from '@/utils/flyLineShader'
 import MeshLine from '@/utils/meshLine'
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js'
 import gsap from 'gsap'
@@ -147,6 +148,15 @@ onMounted(() => {
         [0, 8, -15],
         [0, 10, -10],
         [0, 8, -5],
+        [0, 0, 0],
+      ])
+    )
+    word.scene.add(
+      new FlyLineShader([
+        [0, 0, 20],
+        [0, 8, 15],
+        [0, 10, 10],
+        [0, 8, 5],
         [0, 0, 0],
       ])
     )
