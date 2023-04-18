@@ -103,20 +103,41 @@ const skills = [
 
 const timeline = [
   {
-    time: 'March 28, 2023',
-    work: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis culpa temporibus impedit, nesciunt, quod distinctio porro amet voluptas, necessitatibus assumenda iusto. Itaque laboriosam in ducimus, aperiam deserunt dolor natus dignissimos?',
+    time: '2019.02-至今',
+    company: '上海容智信息技术有限公司',
+    position: '前端经理',
+    work: [],
+    link: 'https://infodator.com/',
   },
   {
-    time: 'March 28, 2023',
-    work: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis culpa temporibus impedit, nesciunt, quod distinctio porro amet voluptas, necessitatibus assumenda iusto. Itaque laboriosam in ducimus, aperiam deserunt dolor natus dignissimos?',
+    time: '2017.10-2019.02',
+    company: '上海雳嬴商务咨询',
+    position: '前端开发',
+    work: [
+      '主要负责外汇金融SVSFX客户管理后台(CRM)开发、维护、升级',
+      'PC端、移动端官网开发、维护',
+      '使用uniapp开发活动页H5页面开发、aes加密对接',
+    ],
+    link: 'https://baike.baidu.com/item/SVSFX/7237974/',
   },
   {
-    time: 'March 28, 2023',
-    work: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis culpa temporibus impedit, nesciunt, quod distinctio porro amet voluptas, necessitatibus assumenda iusto. Itaque laboriosam in ducimus, aperiam deserunt dolor natus dignissimos?',
+    time: '2016.06-2017.09',
+    company: '上海傲祺商务咨询有限公司',
+    position: '前端开发',
+    work: [
+      '负责开发各类广告微信H5页面开发',
+      '各类微信朋友圈广告开发',
+      '微信公众号管理后台开发',
+      '微信小程序开发',
+    ],
+    link: 'https://www.oookini.com/',
   },
   {
-    time: 'March 28, 2023',
-    work: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis culpa temporibus impedit, nesciunt, quod distinctio porro amet voluptas, necessitatibus assumenda iusto. Itaque laboriosam in ducimus, aperiam deserunt dolor natus dignissimos?',
+    time: '2015.3-2016.5',
+    company: '上海智用文化传播有限公司',
+    position: '前端开发',
+    work: ['负责怪猫游戏官网开发、维护', '活动页面的开发'],
+    link: 'https://gm88.com/',
   },
 ]
 
