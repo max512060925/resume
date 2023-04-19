@@ -24,6 +24,7 @@ export default defineEventHandler(async event => {
     )
     return sendStream(event, res.data)
   } catch (error) {
+    setResponseStatus(event, 500)
     return {
       code: 500,
       msg: error,
