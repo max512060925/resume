@@ -14,8 +14,8 @@
         h1 我是姚彦斌
         h1 从事前端开发已有9年
     .swiper-slide(ref='skill', class='py-[50px]')
-      h1.text-white.text-5xl(class='mb-[40px]') 工作技能
-      .flex.flex-1.h-0.px-20.items-center.w-full
+      h1.text-white.text-5xl(class='mb-[40px]') 个人技能
+      .flex.flex-1.h-0.px-20.items-center.w-full(class='pl-[10%]')
         ul.text-white.flex.flex-col.flex-1
           li.my-1.text-base.whitespace-wrap(v-for='txt in skillsText') {{ txt }}
         .skill-animate.flex-1.w-full.h-full(ref='skillRender')

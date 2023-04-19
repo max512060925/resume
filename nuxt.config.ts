@@ -22,11 +22,11 @@ export default defineNuxtConfig({
     openaiApiKey: '',
     chatModel: '',
     mysql: {
-      host: process.env.MYSQL_HOST || 'maxwinnie.xyz',
-      port: process.env.MYSQL_PORT || '3306',
-      database: process.env.MYSQL_DATABASE || 'myDB',
-      username: process.env.MYSQL_USERNAME || 'root',
-      password: process.env.MYSQL_MASSWORD || '941722Zxc!',
+      host: process.env.MYSQL_HOST,
+      port: process.env.MYSQL_PORT,
+      database: process.env.MYSQL_DATABASE,
+      username: process.env.MYSQL_USERNAME,
+      password: process.env.MYSQL_MASSWORD,
     },
   },
   experimental: {
