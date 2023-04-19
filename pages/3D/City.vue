@@ -8,6 +8,7 @@ import BaseWord from '@/utils/baseScene'
 import Flyline from '@/utils/flyLine'
 import FlyLineShader from '@/utils/flyLineShader'
 import MeshLine from '@/utils/meshLine'
+import LinghtWall from '@/utils/linghtWall'
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js'
 import gsap from 'gsap'
 
@@ -160,6 +161,7 @@ onMounted(() => {
         [0, 0, 0],
       ])
     )
+    word.scene.add(new LinghtWall({ radius: 10, height: 5 }))
     word.animate()
   })
 })

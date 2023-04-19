@@ -30,7 +30,7 @@ export class FetchRequest {
         url += `?${QS.stringify(options.params)}`
       }
       const headers = options.headers || {}
-      if (!headers['Content-Type']) {
+      if (!headers['Content-Type'] && !(options.body instanceof FormData)) {
         headers['Content-Type'] = 'application/json'
       }
       if (headers['Content-Type'] === 'application/json' && options.body) {

@@ -1,9 +1,26 @@
-import { DataTypes } from 'sequelize'
+import { DataTypes, Model, Optional } from 'sequelize'
 import sequelize from '../db/mysql'
 import { createHash } from 'node:crypto'
 
+interface UserAttributes {
+  id: number
+  openid?: string
+  nickName?: string
+  avatarUrl?: string
+  username: string
+  password: string
+  email?: string
+  role: number
+  unionid?: string
+}
+
+interface UserCreationAttributes extends Optional<UserAttributes, 'id'> {}
+interface UserInstance
+  extends Model<UserAttributes, UserCreationAttributes>,
+    UserAttributes {}
+
 const hash = createHash('sha256')
-const User = sequelize.define('user', {
+const User = sequelize.define<UserInstance>('user', {
   id: {
     type: DataTypes.INTEGER.UNSIGNED,
     primaryKey: true,

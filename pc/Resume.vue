@@ -330,7 +330,7 @@ onUnmounted(() => intersectionObserver?.stop())
     h1 {
       @apply text-white mx-auto my-5 text-5xl inline-block relative overflow-hidden;
       &:before {
-        @apply content-[''] absolute block w-[200%] h-full bg-gradient-to-r from-amber-200 from-[49.99%] via-[rgb(15,12,42)] via-[49.99%] to-[rgb(15,12,42)] to-100% will-change-transform translate-x-[-50%] animate-[to-right-hide_1.2s_ease-in-out_both];
+        @apply content-[''] absolute block w-[200%] h-full bg-gradient-to-r from-[#fde68a_49.99%] via-[rgb(15,12,42)_49.99%] to-[rgb(15,12,42)_100%] will-change-transform translate-x-[-50%] animate-[to-right-hide_1.2s_ease-in-out_both];
       }
       &:last-child:after {
         @apply content-['|'] opacity-0 animate-[opacity_0.9s_infinite];
