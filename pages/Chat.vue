@@ -38,13 +38,13 @@
         @keydown.enter='inputEnter',
         class='border-black/10 dark:border-gray-900/50 dark:text-white dark:bg-gray-700 shadow-[0_0_10px_rgba(0,0,0,0.10)] dark:shadow-[0_0_15px_rgba(0,0,0,0.10)]'
       )
-      button.absolute.p-1.rounded-md.text-gray-500.right-1.bottom-3(
+      button.absolute.p-1.rounded-md.text-gray-500.right-1.bottom-3.bg-transparent(
         class='hover:bg-gray-900',
         v-if='!waiting',
         type='submit'
       )
         SvgIcon(name='send')
-      button.spin.absolute.flex.p-1.rounded-md.text-gray-500.right-1.cursor-wait.bottom-4(
+      button.spin.absolute.flex.p-1.rounded-md.text-gray-500.right-1.cursor-wait.bottom-4.bg-transparent(
         class='gap-x-[3px]',
         type='button',
         v-else
@@ -231,16 +231,17 @@ onMounted(() => (show = true))
     }
   }
   .writing {
+    --cursor-x: calc(v-bind('cursor.x') * 1px);
+    --cursor-y: calc(v-bind('cursor.y') * 1px);
     @apply relative;
     &:after {
-      @apply content-[""] absolute w-3 h-5 bg-slate-100 opacity-0 left-[calc(v-bind('cursor.x')*1px)] top-[calc(v-bind('cursor.y')*1px)] animate-[opacity_1.5s_infinite];
+      @apply content-[""] absolute w-3 h-5 bg-slate-100 opacity-0 left-[var(--cursor-x)] top-[var(--cursor-y)] animate-[opacity_1.5s_infinite];
     }
   }
   .el-form {
     @apply mb-7 w-full flex z-10 flex-shrink-0 flex-grow-0 basis-auto;
     .spin span {
-      @apply w-1 h-1 bg-white/40 rounded-[50%] opacity-0 animate-toggle;
-
+      @apply w-1 h-1 bg-white/40 rounded-[50%] opacity-0 animate-[opacity_0.9s_infinite];
       &:nth-child(2) {
         animation-delay: 0.3s;
       }

@@ -8,3 +8,18 @@ body {
     @apply w-full h-full overflow-hidden;
   }
 }
+
+@keyframes opacity {
+  30% {
+    opacity: 1;
+  }
+}
+
+@keyframes to-right-hide: {
+  0% {
+    transform: translateX(-51%);
+  }
+  100% {
+    transform: translateX(51%);
+  }
+}

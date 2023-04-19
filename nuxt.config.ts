@@ -20,8 +20,11 @@ export default defineNuxtConfig({
     importStyle: 'scss',
   },
   runtimeConfig: {
-    openaiApiKey: '',
-    chatModel: '',
+    openai: {
+      key: '',
+      model: '',
+      organization: '',
+    },
     mysql: {
       host: '',
       port: '',

@@ -1,9 +1,10 @@
 import { Configuration, OpenAIApi } from 'openai'
 import type { ChatCompletionRequestMessageRoleEnum } from 'openai'
-const { openaiApiKey, chatModel: model } = useRuntimeConfig()
-const openai = new OpenAIApi(
+const { openai } = useRuntimeConfig()
+const openaiApi = new OpenAIApi(
   new Configuration({
-    apiKey: openaiApiKey,
+    apiKey: openai.key,
+    organization: openai.organization,
   })
 )
 export default defineEventHandler(async event => {
@@ -12,9 +13,9 @@ export default defineEventHandler(async event => {
       role: ChatCompletionRequestMessageRoleEnum
       content: string
     }[] = await readBody(event)
-    const res = await openai.createChatCompletion(
+    const res = await openaiApi.createChatCompletion(
       {
-        model,
+        model: openai.model,
         messages,
         stream: true,
       },
@@ -24,6 +25,7 @@ export default defineEventHandler(async event => {
     )
     return sendStream(event, res.data)
   } catch (error) {
+    console.log(error)
     setResponseStatus(event, 500)
     return {
       code: 500,

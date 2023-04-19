@@ -333,7 +333,7 @@ onUnmounted(() => intersectionObserver?.stop())
         @apply content-[''] absolute block w-[200%] h-full bg-gradient-to-r from-amber-200 from-[49.99%] via-[rgb(15,12,42)] via-[49.99%] to-[rgb(15,12,42)] to-100% will-change-transform translate-x-[-50%] animate-[to-right-hide_1.2s_ease-in-out_both];
       }
       &:last-child:after {
-        @apply content-['|'] animate-toggle opacity-0;
+        @apply content-['|'] opacity-0 animate-[opacity_0.9s_infinite];
         animation-delay: 1.2s;
       }
     }

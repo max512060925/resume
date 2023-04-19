@@ -55,8 +55,8 @@ module.exports = {
         NODE_ENV: 'production',
         // 当前环境接口地址，如果不用可不配置 process.env.REMOTE_ADDR
         // REMOTE_ADDR: 'http://www.dzm.com/',
-        NUXT_OPENAI_API_KEY: '',
-        NUXT_OPENAI_API_MODEL: 'gpt-3.5-turbo',
+        NUXT_OPENAI_KEY: '',
+        NUXT_OPENAI_MODEL: 'gpt-3.5-turbo',
         NUXT_MYSQL_HOST: '',
         NUXT_MYSQL_PORT: '',
         NUXT_MYSQL_DATABASE: '',
