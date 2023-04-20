@@ -1,4 +1,3 @@
-import UserModel from '~/server/models/user'
 export default defineEventHandler(async event => {
   try {
     const req: {

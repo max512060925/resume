@@ -20,15 +20,8 @@ export default defineEventHandler(async event => {
       return new Error('用户已存在')
     }
     const { password, ...data } = await UserModel.create({ ...req, role: 1 })
-    return {
-      code: 0,
-      data,
-    }
-  } catch (error) {
-    setResponseStatus(event, 500)
-    return {
-      code: 500,
-      msg: String(error),
-    }
+    return resJsonBody(data)
+  } catch (e) {
+    return failJsonBody(500, String(e), event)
   }
 })

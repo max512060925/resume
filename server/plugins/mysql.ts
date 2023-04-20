@@ -1,4 +1,3 @@
-import sequelize from '../db/mysql'
 export default defineNitroPlugin(() => {
   sequelize
     .authenticate()

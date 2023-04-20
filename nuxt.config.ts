@@ -25,6 +25,9 @@ export default defineNuxtConfig({
       model: '',
       organization: '',
     },
+    auth: {
+      secret: '',
+    },
     mysql: {
       host: '',
       port: '',

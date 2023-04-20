@@ -1,6 +1,6 @@
 import { Sequelize } from 'sequelize'
 const { mysql } = useRuntimeConfig()
-const sequelize = new Sequelize(
+export const sequelize = new Sequelize(
   mysql.database,
   mysql.username,
   mysql.password,
@@ -9,5 +9,3 @@ const sequelize = new Sequelize(
     dialect: 'mysql',
   }
 )
-
-export default sequelize

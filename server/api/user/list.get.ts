@@ -1,4 +1,3 @@
-import UserModel from '~/server/models/user'
 const { mysql } = useRuntimeConfig()
 export default defineEventHandler(async event => {
   const res = await UserModel.findAll()

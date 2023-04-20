@@ -1,5 +1,4 @@
 import { DataTypes, Model, Optional } from 'sequelize'
-import sequelize from '../db/mysql'
 import { createHash } from 'node:crypto'
 
 interface UserAttributes {
@@ -20,7 +19,7 @@ interface UserInstance
     UserAttributes {}
 
 const hash = createHash('sha256')
-const User = sequelize.define<UserInstance>('user', {
+const UserModel = sequelize.define<UserInstance>('user', {
   id: {
     type: DataTypes.INTEGER.UNSIGNED,
     primaryKey: true,
@@ -86,8 +85,8 @@ const User = sequelize.define<UserInstance>('user', {
 })
 
 ;(async () => {
-  await User.sync() //表不存在，则创建该表
-  User.findOrCreate({
+  await UserModel.sync() //表不存在，则创建该表
+  UserModel.findOrCreate({
     where: { role: 0 },
     defaults: {
       username: 'admin',
@@ -97,4 +96,4 @@ const User = sequelize.define<UserInstance>('user', {
   })
 })()
 
-export default User
+export default UserModel
