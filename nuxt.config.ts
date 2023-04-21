@@ -39,13 +39,21 @@ export default defineNuxtConfig({
   experimental: {
     reactivityTransform: true,
   },
-  nitro: {},
-  vite: {
-    resolve: {
-      alias: {
-        '@': resolve(process.cwd()),
+  nitro: {
+    storage: {
+      redis: {
+        driver: 'redis',
+        /* redis connector options */
+        port: 6379, // Redis port
+        host: 'maxwinnie.xyz', // Redis host
+        username: 'max', // needs Redis >= 6
+        password: '941722Zxc!',
+        db: 0, // Defaults to 0
+        tls: {}, // tls/ssl
       },
     },
+  },
+  vite: {
     plugins: [
       createSvgIconsPlugin({
         iconDirs: [resolve(process.cwd(), 'public/icon')],
