@@ -2,10 +2,10 @@
 .w-full.h-full(ref='box')
   Loading(:percentage='percentage', :load-text='loadText', v-if='!loading')
   .absolute.bottom-5(v-else, class='w-11/12 left-1/2 -translate-x-1/2')
-    SvgIcon.text-900.cursor-pointer(
-      class='text-[5vmin]',
-      :name='start ? "pause" : "play"',
-      @click='play'
+    component.text-900.cursor-pointer(
+      :is='start ? "IconPause" : "IconPlay"',
+      @click='play',
+      class='text-[5vmin]'
     )
   canvas.w-full.h-full(ref='canvas')
 </template>

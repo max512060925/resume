@@ -5,7 +5,16 @@ const { auth } = useRuntimeConfig()
 
 export default defineEventHandler(async event => {
   try {
-    const res = await UserModel.findOne(await readBody(event))
+    const { code, ...parmas } = await readBody(event)
+    const redisCode = await redisClient.get(event.context.session.id)
+    if (!redisCode) {
+      return failJsonBody(500, '验证码过期')
+    }
+    if (code.toLowerCase() !== redisCode.toLowerCase()) {
+      return failJsonBody(500, '验证码错误')
+    }
+    redisClient.del(event.context.session.id)
+    const res = await UserModel.findOne(parmas)
     if (res) {
       const { password, ...data } = res
       const token = jwt.sign(

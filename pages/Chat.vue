@@ -13,7 +13,7 @@
           class='w-[30px] h-[30px] bg-[#10a37f]',
           v-if='isRobot'
         )
-          SvgIcon(name='open-ai')
+          IconOpenAi
         .flex.items-center.bg-purple-800.justify-center.rounded-sm(
           class='w-[30px] h-[30px]',
           v-else
@@ -43,7 +43,7 @@
         v-if='!waiting',
         type='submit'
       )
-        SvgIcon(name='send')
+        IconSend
       button.spin.absolute.flex.p-1.rounded-md.text-gray-500.right-1.cursor-wait.bottom-4.bg-transparent(
         class='gap-x-[3px]',
         type='button',

@@ -1,12 +1,11 @@
 import captcha from 'svg-captcha'
-import { setCookie } from 'h3'
-import { createHash } from 'node:crypto'
-const md5 = createHash('md5')
-export default defineEventHandler(async event => {
+export default defineEventHandler(event => {
   const { text, data } = captcha.create()
-  const abc = await useStorage().getItem('redis:code')
-  console.log(abc)
-  setCookie(event, 'code', text)
 
+  redisClient.set(event.context.session.id, text, {
+    EX: 60 * 5, //5分钟过期
+    NX: true,
+  })
+  event.node.res.setHeader('Content-Type', 'image/svg+xml')
   return data
 })

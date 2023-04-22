@@ -10,22 +10,24 @@
   },
   "devDependencies": {
     "@element-plus/nuxt": "^1.0.4",
+    "@sidebase/nuxt-session": "^0.2.7",
     "@types/marked": "^4.0.8",
     "@types/node": "^18.15.13",
     "@types/three": "^0.150.2",
-    "@unocss/extractor-pug": "^0.51.5",
-    "@unocss/nuxt": "^0.51.5",
-    "@unocss/preset-wind": "^0.51.5",
-    "@unocss/reset": "^0.51.5",
-    "@volar/vue-language-plugin-pug": "^1.4.1",
+    "@unocss/extractor-pug": "^0.51.6",
+    "@unocss/nuxt": "^0.51.6",
+    "@unocss/preset-wind": "^0.51.6",
+    "@unocss/reset": "^0.51.6",
+    "@volar/vue-language-plugin-pug": "^1.4.2",
     "@vue-macros/reactivity-transform": "^0.3.4",
     "@vueuse/core": "^9.13.0",
     "@vueuse/nuxt": "^9.13.0",
     "nuxt": "^3.4.2",
     "pug": "^3.0.2",
     "sass": "^1.62.0",
-    "vite-plugin-glsl": "^1.1.2",
-    "vite-plugin-svg-icons": "^2.0.1"
+    "unplugin-icons": "^0.16.1",
+    "unplugin-vue-components": "^0.24.1",
+    "vite-plugin-glsl": "^1.1.2"
   },
   "dependencies": {
     "element-plus": "^2.3.3",
@@ -37,9 +39,10 @@
     "mysql2": "^3.2.3",
     "openai": "^3.2.1",
     "qs": "^6.11.1",
+    "redis": "^4.6.5",
     "sequelize": "^6.31.0",
     "svg-captcha": "^1.4.0",
-    "swiper": "^9.2.3",
+    "swiper": "^9.2.4",
     "three": "^0.151.3"
   }
 }

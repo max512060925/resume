@@ -9,6 +9,14 @@ body {
   }
 }
 
+.mobile-fixed {
+  @apply fixed top-0  overflow-hidden z-0;
+}
+
+.svg-icon {
+  @apply w-[1em] h-[1em] align-[-0.15em] fill-current overflow-hidden outline-none;
+}
+
 @keyframes opacity {
   30% {
     opacity: 1;

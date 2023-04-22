@@ -8,7 +8,7 @@
           class='rounded-[50%] w-[180px] h-[180px] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'
         )
         .linear.linear-gradient
-          span.linear-gradient(v-for='n in 4')
+          span.linear-gradient(v-for='n in 6')
       .info.flex.flex-col
         h1 Hello~ 你好!
         h1 我是姚彦斌
@@ -17,7 +17,7 @@
       h1.text-white.text-5xl(class='mb-[40px]') 个人技能
       .flex.flex-1.h-0.px-20.items-center.w-full(class='pl-[10%]')
         ul.text-white.flex.flex-col.flex-1
-          li.my-1.text-base.whitespace-wrap(v-for='txt in skillsText') {{ txt }}
+          li.text-base.whitespace-wrap(v-for='txt in skillsText') {{ txt }}
         .skill-animate.flex-1.w-full.h-full(ref='skillRender')
           template(v-for='item in skills')
             img(
@@ -48,7 +48,7 @@
                 li.list-none(v-for='item in work', class='first:mt-3')
                   p.inline-flex.items-center.leading-relaxed.line-effect(
                     class='!group-hover/card:bg-[length:100%_2px] !group-hover/card:bg-left-bottom'
-                  ) #[SvgIcon.mr-2(name='project')] {{ item }}
+                  ) #[IconProject.mr-2] {{ item }}
                 .flex.justify-end
                   a.leading-relaxed.line-effect(:href='link', target='_blank') 公司官网
   .swiper-pagination
@@ -74,21 +74,6 @@ let skill: HTMLDivElement = $ref()
 let skillRender: HTMLDivElement = $ref()
 let skillRefs: HTMLImageElement[] = $ref([])
 let showSkill = $ref(false)
-let skillsText = [
-  '熟练掌握HTML/CSS/JavaScript/Typescript',
-  '熟悉常用前端工程化工具Gulp/Grunt/Webpack/Parcel/Vite，掌握模块化思想和技术实现方案',
-  '熟练掌握Photoshop、 sketch等设计软件，能独立完成产品功能的交互界面设计',
-  '精通Vue2和Vue3，会应用Vue生态常用工具，如vue-router/pinia/vuex/vueuse',
-  '精通Vue常用UI框架，如element-ui/element-plus/vant',
-  '熟悉React前端框架，会应用react 16+生态常用工具，如redux/react-router-dom/react-use/ahooks',
-  '熟悉React常用UI框架，如Ant Design',
-  '熟练使用CSS预编译语言，掌握unocss/tailwindcss/sass/less预编译语言等',
-  '熟悉计算机网络理论，掌握基于XHR(axios)/Fetch的前端应用开发经验，会熟练使用XHR(axios)/Fetch等网络请求库',
-  '熟悉图形学和webgl，熟练使用threejs框架，熟练canvas相关渲染及动画操作',
-  '具有小程序(uniapp,taro)、移动端混合开发、SSR、NodeJS、桌面应用(electron)开发经验',
-  '会使用sequelize、mongoose操作常见数据库',
-  '有良好的编码习惯，对前端技术有持续的热情，个性乐观开朗,逻辑性强，善于与团队融为一体',
-]
 
 let intersectionObserver
 
@@ -205,7 +190,7 @@ const skillsAnimation = () => {
     const object = new Object3D()
     const phi = Math.acos(-1 + (2 * i) / length)
     const theta = Math.sqrt(length * Math.PI) * phi
-    object.position.setFromSphericalCoords(width, phi, theta)
+    object.position.setFromSphericalCoords(width * 0.9, phi, theta)
     vector.copy(object.position).multiplyScalar(2)
     object.lookAt(vector)
     return {
@@ -269,7 +254,7 @@ onMounted(() => {
   new Swiper(swiperBox, {
     modules: [Mousewheel, Pagination],
     direction: 'vertical',
-    followFinger: false,
+    allowTouchMove: false,
     mousewheel: true,
     pagination: {
       el: '.swiper-pagination',
@@ -296,7 +281,7 @@ onUnmounted(() => intersectionObserver?.stop())
 }
 .resume {
   --bg-color: rgb(15, 12, 42);
-  @apply w-screen h-screen scroll-smooth bg-[var(--bg-color)];
+  @apply w-screen h-screen scroll-smooth bg-[var(--bg-color)] overflow-hidden;
   .swiper-slide {
     @apply w-screen h-screen flex flex-col items-center justify-center overflow-hidden relative;
   }
@@ -306,14 +291,10 @@ onUnmounted(() => intersectionObserver?.stop())
       @apply absolute w-full h-full rounded-[50%] animate-spin;
       span {
         @apply absolute w-full h-full rounded-[50%];
-        &:nth-child(2) {
-          @apply blur-[5px];
-        }
-        &:nth-child(3) {
-          @apply blur-[10px];
-        }
-        &:nth-child(4) {
-          @apply blur-[25px];
+        @for $i from 1 through 4 {
+          &:nth-child(#{$i}) {
+            filter: blur(($i - 1) * 5px);
+          }
         }
         &:nth-child(5) {
           @apply blur-[50px];

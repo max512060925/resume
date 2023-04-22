@@ -2,7 +2,7 @@
 .container(ref='box')
   Loading(:percentage='percentage', :load-text='loadText', v-if='loading')
   .btn-box(v-else)
-    SvgIcon(:name='start ? "pause" : "play"', @click='play')
+    component(:is='start ? "IconPause" : "IconPlay"', @click='play')
   canvas#webgl-canvas(ref='canvas')
 </template>
 
