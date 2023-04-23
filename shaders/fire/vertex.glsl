@@ -12,4 +12,3 @@ void main(){
   // 设置顶点大小
   gl_PointSize=size*scale-(time*20.);
 }
-

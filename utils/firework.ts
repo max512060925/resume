@@ -16,7 +16,7 @@ import pointFragment from '@/shaders/point/fragment.glsl'
 import fireVertex from '@/shaders/fire/vertex.glsl'
 import fireFragment from '@/shaders/fire/fragment.glsl'
 
-export default class Firework {
+export class Firework {
   color: Color
   point: Points //初始圆点
   fire: Points //爆炸效果

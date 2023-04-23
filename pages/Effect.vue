@@ -8,8 +8,7 @@ import {
   CubeRefractionMapping,
   ACESFilmicToneMapping,
 } from 'three'
-import BaseWord from '@/utils/baseScene'
-
+ 
 let canvas: HTMLCanvasElement = $ref()
 let box: HTMLDivElement = $ref()
 const word = new BaseWord({ control: true })

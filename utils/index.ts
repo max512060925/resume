@@ -11,5 +11,6 @@ export const skillsText = [
   '熟悉图形学和webgl，熟练使用threejs框架，熟练canvas相关渲染及动画操作',
   '具有小程序(uniapp,taro)、移动端混合开发、SSR、NodeJS、桌面应用(electron)开发经验',
   '会使用sequelize、mongoose、node-redis操作常见数据库',
+  '会使用Chat-GPT等AI工具帮助提升开发效率',
   '有良好的编码习惯，对前端技术有持续的热情，个性乐观开朗,逻辑性强，善于与团队融为一体',
 ]

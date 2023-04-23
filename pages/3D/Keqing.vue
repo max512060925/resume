@@ -11,7 +11,6 @@
 </template>
 <script lang="ts" setup>
 import { Vector3 } from 'three'
-import BaseWord from '@/utils/baseScene'
 import MMD from '@/utils/mmd'
 useHead({
   title: '刻晴',

@@ -6,8 +6,6 @@
   ) 发射烟花
 </template>
 <script lang="ts" setup>
-import BaseWord from '@/utils/baseScene'
-import Firework from '@/utils/firework'
 import {
   ACESFilmicToneMapping,
   PlaneGeometry,

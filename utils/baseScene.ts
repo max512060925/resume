@@ -39,7 +39,7 @@ interface BaseParams {
   directional?: LightParams
 }
 
-export default class BaseWord {
+export class BaseWord {
   scene: Scene //场景
   camera: PerspectiveCamera //摄像机
   renderer: WebGLRenderer //渲染器

@@ -4,7 +4,6 @@
 </template>
 <script lang="ts" setup>
 import { Vector3, Mesh, MeshBasicMaterial, Color, Vector2 } from 'three'
-import BaseWord from '@/utils/baseScene'
 import Flyline from '@/utils/flyLine'
 import FlyLineShader from '@/utils/flyLineShader'
 import MeshLine from '@/utils/meshLine'
@@ -162,6 +161,8 @@ onMounted(() => {
       ])
     )
     word.scene.add(new LinghtWall({ radius: 10, height: 5 }))
+    word.scene.add(new Radar(6, [4, 2, -7]))
+    // scene.add(lightRadar.mesh);
     word.animate()
   })
 })
