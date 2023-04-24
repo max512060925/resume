@@ -14,7 +14,7 @@ import { Vector3 } from 'three'
 import MMD from '@/utils/mmd'
 useHead({
   title: '刻晴',
-  script: [{ src: '/ammo/ammo.wasm.js' }],
+  script: [{ src: '/ammo/ammo.wasm.js', defer: true }],
 })
 
 let canvas: HTMLCanvasElement = $ref()
