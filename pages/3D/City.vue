@@ -3,7 +3,15 @@
   canvas.w-full.h-full(ref='canvas')
 </template>
 <script lang="ts" setup>
-import { Vector3, Mesh, MeshBasicMaterial, Color, Vector2 } from 'three'
+import {
+  Vector3,
+  Mesh,
+  MeshBasicMaterial,
+  Color,
+  Vector2,
+  CubeTextureLoader,
+  CubeRefractionMapping,
+} from 'three'
 import Flyline from '@/utils/flyLine'
 import FlyLineShader from '@/utils/flyLineShader'
 import MeshLine from '@/utils/meshLine'
@@ -51,6 +59,12 @@ if(goTopIndex>0.0){
 
 onMounted(() => {
   word.start(canvas, box)
+  const envMap = new CubeTextureLoader()
+    .setPath('/textures/environment/sky')
+    .load(['/1.jpg', '/2.jpg', '/3.jpg', '/4.jpg', '/5.jpg', '/6.jpg'])
+  envMap.mapping = CubeRefractionMapping
+  word.scene.background = envMap
+  word.scene.environment = envMap
   new FBXLoader().load('/models/city.fbx', object => {
     object.traverse((item: Mesh) => {
       if (item.isMesh) {
@@ -162,6 +176,13 @@ onMounted(() => {
     )
     word.scene.add(new LinghtWall({ radius: 10, height: 5 }))
     word.scene.add(new Radar(6, [4, 2, -7]))
+
+    const sprite = new MySprite(word.camera)
+    word.scene.add(sprite)
+    sprite.onClick(e => {
+      console.log(666)
+      console.log(e)
+    })
     // scene.add(lightRadar.mesh);
     word.animate()
   })
