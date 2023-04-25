@@ -5,7 +5,7 @@ const redisClient = createClient({
   password: redis.password,
   socket: {
     keepAlive: 1,
-    reconnectStrategy: retries => Math.min(retries * 50, 1000),
+    reconnectStrategy: retries => Math.min(retries * 50, 2000),
   },
 })
 

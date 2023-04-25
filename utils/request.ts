@@ -36,13 +36,11 @@ export class FetchRequest {
       if (headers['Content-Type'] === 'application/json' && options.body) {
         options.body = JSON.stringify(options.body)
       }
-
       const res: any = await $fetch(url, {
         ...options,
         headers,
         signal: source.signal,
       })
-      console.log(res)
       this.source.delete(url)
       if (res instanceof ReadableStream || res instanceof Blob) {
         return res

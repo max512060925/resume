@@ -11,6 +11,7 @@ export default defineEventHandler(async event => {
       }
       event.context.uid = uid
     } catch (e) {
+      deleteCookie(event, 'token')
       event.context.uid = null
     }
   }

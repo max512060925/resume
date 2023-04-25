@@ -66,7 +66,9 @@ export default defineNuxtConfig({
       port: '',
       password: '',
     },
-    comic: {},
+    disk: {
+      path: 'D:/my-disk',
+    },
   },
 
   experimental: {

@@ -5,28 +5,31 @@ const { auth } = useRuntimeConfig()
 
 export default defineEventHandler(async event => {
   try {
-    const { code, ...parmas } = await readBody(event)
-    const redisCode = await redisClient.get(event.context.session.id)
+    const { code, password, ...parmas } = await readBody(event)
+
+    const sessionId = event.context.session.id
+    const redisCode = await redisClient.get(sessionId)
     if (!redisCode) {
       return failJsonBody(500, '验证码过期')
     }
     if (code.toLowerCase() !== redisCode.toLowerCase()) {
       return failJsonBody(500, '验证码错误')
     }
-    redisClient.del(event.context.session.id)
-    const res = await UserModel.findOne(parmas)
+    redisClient.del(sessionId)
+    const res = await UserModel.findOne({
+      where: { ...parmas, password: passwordEncode(password) },
+    })
+
     if (res) {
-      const { password, ...data } = res.toJSON()
       const token = jwt.sign(
         {
-          // exp: Date.now() + 1000 * 60 * 60,
-          exp: Date.now() + 1000,
-          uid: data.id,
+          exp: Date.now() + 1000 * 60 * 60,
+          uid: res.id,
         },
         auth.secret
       )
       setCookie(event, 'token', token)
-      return resJsonBody(data)
+      return resJsonBody({ ...res, token })
     } else {
       return failJsonBody(500, '用户名或密码错误')
     }
