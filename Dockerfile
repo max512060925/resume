@@ -3,7 +3,8 @@ FROM node:18
 
 WORKDIR /app
 COPY . .
-RUN pnpm i && pnpm build 
+RUN pnpm i 
+RUN pnpm build 
 
 # 暴露端口
 EXPOSE 8181
