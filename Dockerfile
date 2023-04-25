@@ -1,8 +1,9 @@
 FROM keymetrics/pm2
+FROM node:18
 
 WORKDIR /app
-COPY .output .output
-COPY ecosystem.config.js ecosystem.config.js
+COPY . .
+RUN pnpm i && pnpm build 
 
 # 暴露端口
 EXPOSE 8181
