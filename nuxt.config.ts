@@ -66,7 +66,9 @@ export default defineNuxtConfig({
       port: '',
       password: '',
     },
+    comic: {},
   },
+
   experimental: {
     reactivityTransform: true,
   },

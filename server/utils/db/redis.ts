@@ -3,6 +3,10 @@ const { mysql, redis } = useRuntimeConfig()
 const redisClient = createClient({
   url: `redis://${mysql.host}:${redis.port}`,
   password: redis.password,
+  socket: {
+    keepAlive: 1,
+    reconnectStrategy: retries => Math.min(retries * 50, 1000),
+  },
 })
 
 export { redisClient }

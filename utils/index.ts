@@ -1,3 +1,6 @@
+export const waitTime = (s: number) =>
+  new Promise(resolve => setTimeout(resolve, s))
+
 export const skillsText = [
   '熟练掌握HTML/CSS/JavaScript/Typescript',
   '熟悉常用前端工程化工具Gulp/Grunt/Webpack/Parcel/Vite，掌握模块化思想和技术实现方案',

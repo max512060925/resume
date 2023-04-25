@@ -1,8 +1,7 @@
 import captcha from 'svg-captcha'
-export default defineEventHandler(event => {
+export default defineEventHandler(async event => {
   const { text, data } = captcha.create()
-
-  redisClient.set(event.context.session.id, text, {
+  await redisClient.set(event.context.session.id, text, {
     EX: 60 * 5, //5分钟过期
     NX: true,
   })
