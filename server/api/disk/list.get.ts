@@ -1,5 +1,5 @@
 import { readdir, stat } from 'fs/promises'
-import { resolve, join } from 'path'
+import { resolve, join, parse } from 'path'
 import { fileTypeFromFile } from 'file-type'
 
 const {
@@ -23,6 +23,7 @@ export default defineEventHandler(async event => {
               createTime: birthtime,
               updateTime: mtime,
               size,
+              hidden: parse(file.name).base.startsWith('$'),
               ...(isFile &&
                 (await fileTypeFromFile(join(basePath, file.name)))),
             }

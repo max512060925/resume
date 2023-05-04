@@ -1,7 +1,7 @@
 import type { H3Event } from 'h3'
 import { createHash } from 'node:crypto'
 
-export const resJsonBody = (data: any) => ({
+export const resJsonBody = (data?: any) => ({
   code: 0,
   data,
   msg: '成功',

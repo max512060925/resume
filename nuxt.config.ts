@@ -67,7 +67,8 @@ export default defineNuxtConfig({
       password: '',
     },
     disk: {
-      path: 'D:/my-disk',
+      // path: 'D:/my-disk',
+      path: '/Users/yyb/Downloads',
     },
   },
 
