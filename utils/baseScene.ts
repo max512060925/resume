@@ -12,7 +12,7 @@ import {
   AnimationClip,
   Color,
   DirectionalLight,
-  sRGBEncoding,
+  SRGBColorSpace,
   Vector3,
   Group,
 } from 'three'
@@ -99,7 +99,7 @@ export class BaseWord {
       (box || canvas).clientHeight
     )
     this.renderer.useLegacyLights = true
-    this.renderer.outputEncoding = sRGBEncoding
+    this.renderer.outputColorSpace = SRGBColorSpace
     this.renderer.render(this.scene, this.camera)
 
     if (box) {
@@ -113,13 +113,14 @@ export class BaseWord {
     }
   }
   animate(cb?) {
-    if (cb instanceof Function) {
-      cb()
-    }
-    if (this.needControl) {
-      this.control.update()
-    }
-    this.renderer.render(this.scene, this.camera)
-    requestAnimationFrame(() => this.animate(cb))
+    this.renderer.setAnimationLoop(() => {
+      if (cb instanceof Function) {
+        cb()
+      }
+      if (this.needControl) {
+        this.control.update()
+      }
+      this.renderer.render(this.scene, this.camera)
+    })
   }
 }

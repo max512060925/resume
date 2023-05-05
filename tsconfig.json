@@ -6,6 +6,9 @@
   },
   "compilerOptions": {
     "strict": false,
-    "types": ["@vue-macros/reactivity-transform/macros-global"]
+    "types": [
+      "@vue-macros/reactivity-transform/macros-global",
+      "unplugin-icons/types/vue"
+    ]
   }
 }

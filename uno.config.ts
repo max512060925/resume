@@ -15,6 +15,7 @@ export default defineConfig({
       // ...
     },
   },
+  rules: [[/^bg-image-(.*)$/, ([, s]) => ({ 'background-image': `${s}` })]],
   extractors: [extractorPug()],
   transformers: [transformerDirectives(), transformerVariantGroup()],
 })

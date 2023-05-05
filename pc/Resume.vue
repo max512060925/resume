@@ -5,10 +5,10 @@
       .mine
         img.z-10.absolute(
           src='~/assets/img/mine.png',
-          class='rounded-[50%] w-[180px] h-[180px] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'
+          class='w-65% h-65% left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'
         )
-        .linear.linear-gradient
-          span.linear-gradient(v-for='n in 6')
+        .linear
+          //- span.linear-gradient(v-for='n in 6')
       .info.flex.flex-col
         h1 Hello~ 你好!
         h1 我是姚彦斌
@@ -276,29 +276,56 @@ onMounted(() => {
 onUnmounted(() => intersectionObserver?.stop())
 </script>
 <style lang="scss" scoped>
-.linear-gradient {
-  @apply bg-gradient-to-b from-sky-400 via-amber-200 to-fuchsia-500;
+@property --spin {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
 }
+
+@mixin linear-gradient() {
+  background-image: linear-gradient(var(--spin), #38bdf8, #fde68a, #d946ef);
+  animation: image-spin 1.2s linear infinite;
+}
+@keyframes image-spin {
+  0% {
+    --spin: 0deg;
+  }
+  100% {
+    --spin: 360deg;
+  }
+}
+
 .resume {
   --bg-color: rgb(15, 12, 42);
+
   @apply w-screen h-screen scroll-smooth bg-[var(--bg-color)] overflow-hidden;
   .swiper-slide {
     @apply w-screen h-screen flex flex-col items-center justify-center overflow-hidden relative;
   }
   .mine {
-    @apply relative mx-auto w-[190px] h-[190px] z-10 mb-16;
+    @apply relative mx-auto w-250px h-250px z-10 mb-16;
+    img {
+      clip-path: path(
+        'M81.25 29.92c-19.134-38.559-81.243-27.516-81.243 22.14 0 49.223 67.052 74.059 81.243 103.668 14.192-29.609 81.25-54.444 81.25-103.668 0-49.61-62.089-60.748-81.25-22.141z'
+      );
+    }
     .linear {
-      @apply absolute w-full h-full rounded-[50%] animate-spin;
-      span {
-        @apply absolute w-full h-full rounded-[50%];
-        @for $i from 1 through 4 {
-          &:nth-child(#{$i}) {
-            filter: blur(($i - 1) * 5px);
-          }
-        }
-        &:nth-child(5) {
-          @apply blur-[50px];
-        }
+      clip-path: polygon(
+        0% 0%,
+        0% 100%,
+        40px 100%,
+        40px 40px,
+        calc(100% - 40px) 40px,
+        calc(100% - 40px) calc(100% - 40px),
+        40px calc(100% - 40px),
+        30px 100%,
+        100% 100%,
+        100% 0%
+      );
+      @apply absolute w-full h-full before:(content-[''] z-2 blur-20 bg-image-inherit absolute w-full h-full);
+      &:after {
+        @apply content-[''] blur-5 bg-image-inherit z-2 absolute w-80% h-80% left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2;
+        @include linear-gradient;
       }
     }
     &:hover {
