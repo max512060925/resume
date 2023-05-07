@@ -1,5 +1,5 @@
 <template lang="pug">
-.content.h-full
+.content.h-full(ref='box')
   canvas#webgl-canvas.w-full.h-full(ref='canvas')
   button.p-2.absolute.bg-yellow-400.top-4.right-4.rounded.text-purple-700(
     @click='launch'
@@ -51,8 +51,9 @@ loader.load('/models/building/building.glb', ({ scene }) =>
   word.scene.add(scene)
 )
 const textureLoader = new TextureLoader()
+
 onMounted(() => {
-  word.start(canvas, box)
+  word.start(canvas)
   word.renderer.toneMapping = ACESFilmicToneMapping
   word.animate(() => {
     fireworks.forEach((item, i) =>
@@ -89,9 +90,9 @@ onMounted(() => {
   //   distortionScale: 3.7,
   //   fog: word.scene.fog !== undefined,
   // })
-
   water.rotation.x = -Math.PI / 2
   water.position.y = 1
   word.scene.add(water)
+  word.watchResize(box)
 })
 </script>

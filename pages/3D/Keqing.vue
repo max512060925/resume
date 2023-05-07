@@ -48,7 +48,7 @@ const play = () => {
 onMounted(async () => {
   const { Ammo } = window
   await Ammo()
-  word.start(canvas, box)
+  word.start(canvas)
   const [mesh] = await Promise.all([
     mmd.loadModelAndAnimation({
       pmx: '/models/keqing/keqing.pmx',
@@ -72,5 +72,6 @@ onMounted(async () => {
   word.animate(() =>
     start ? mmd.update(word.clock.getDelta()) : word.control.update()
   )
+  word.watchResize(box)
 })
 </script>

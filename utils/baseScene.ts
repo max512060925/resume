@@ -81,9 +81,8 @@ export class BaseWord {
     this.scene.add(new AxesHelper(5))
     this.scene.add(this.camera)
   }
-  start(canvas: HTMLCanvasElement, box?: HTMLDivElement) {
-    this.camera.aspect =
-      (box || canvas).clientWidth / (box || canvas).clientHeight
+  start(canvas: HTMLCanvasElement) {
+    this.camera.aspect = canvas.clientWidth / canvas.clientHeight
     this.camera.updateProjectionMatrix()
     if (this.needControl) {
       this.control = new OrbitControls(this.camera, canvas)
@@ -94,24 +93,22 @@ export class BaseWord {
       alpha: true,
       antialias: true, //抗锯齿
     })
-    this.renderer.setSize(
-      (box || canvas).clientWidth,
-      (box || canvas).clientHeight
-    )
+    this.renderer.setSize(canvas.clientWidth, canvas.clientHeight)
     this.renderer.useLegacyLights = true
     this.renderer.outputColorSpace = SRGBColorSpace
     this.renderer.render(this.scene, this.camera)
-
-    if (box) {
-      const debouncedFn = useDebounceFn(() => {
+  }
+  watchResize(box) {
+    useResizeObserver(
+      box,
+      useDebounceFn(() => {
         this.camera.aspect = box.clientWidth / box.clientHeight
         this.camera.updateProjectionMatrix()
         this.renderer.setSize(box.clientWidth, box.clientHeight)
       }, 100)
-
-      useResizeObserver(box, debouncedFn)
-    }
+    )
   }
+
   animate(cb?) {
     this.renderer.setAnimationLoop(() => {
       if (cb instanceof Function) {

@@ -58,7 +58,7 @@ if(goTopIndex>0.0){
 `
 
 onMounted(() => {
-  word.start(canvas, box)
+  word.start(canvas)
   const envMap = new CubeTextureLoader()
     .setPath('/textures/environment/sky')
     .load(['/1.jpg', '/2.jpg', '/3.jpg', '/4.jpg', '/5.jpg', '/6.jpg'])
@@ -186,5 +186,6 @@ onMounted(() => {
     // scene.add(lightRadar.mesh);
     word.animate()
   })
+  word.watchResize(box)
 })
 </script>

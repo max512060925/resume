@@ -8,7 +8,6 @@
           class='w-65% h-65% left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'
         )
         .linear
-          //- span.linear-gradient(v-for='n in 6')
       .info.flex.flex-col
         h1 Hello~ 你好!
         h1 我是姚彦斌
@@ -174,7 +173,7 @@ const skillsAnimation = () => {
   controls.addEventListener('change', render)
 
   const length = skillRefs.length
-  const vector = new Vector3()
+  const vector = new Vector3(0, 0, 0)
   const group = new Group()
   const targets = skillRefs.map((el, i) => {
     const objectCSS = new CSS3DObject(el)
@@ -190,8 +189,7 @@ const skillsAnimation = () => {
     const object = new Object3D()
     const phi = Math.acos(-1 + (2 * i) / length)
     const theta = Math.sqrt(length * Math.PI) * phi
-    object.position.setFromSphericalCoords(width * 0.9, phi, theta)
-    vector.copy(object.position).multiplyScalar(2)
+    object.position.setFromSphericalCoords(width * 0.8, phi, theta)
     object.lookAt(vector)
     return {
       objectCSS,
