@@ -7,4 +7,3 @@ void main(){
   strength=pow(strength,1.5);
   gl_FragColor=vec4(color,strength);
 }
-

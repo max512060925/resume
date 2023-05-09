@@ -66,8 +66,12 @@ export default defineNuxtConfig({
       port: '',
       password: '',
     },
+    public: {
+      cesium: {
+        token: process.env.NUXT_CESIUM_TOKEN,
+      },
+    },
     disk: {
-      // path: 'D:/my-disk',
       path: '/Users/yyb/Downloads',
     },
   },
@@ -75,17 +79,6 @@ export default defineNuxtConfig({
   experimental: {
     reactivityTransform: true,
   },
-  // nitro: {
-  //   storage: {
-  //     redis: {
-  //       driver: 'redis',
-  //       /* redis connector options */
-  //       port: process.env.NUXT_REDIS_PORT, // Redis port
-  //       host: process.env.NUXT_MYSQL_HOST, // Redis host
-  //       password: process.env.NUXT_REDIS_PASSWORD,
-  //     },
-  //   },
-  // },
   vite: {
     plugins: [
       // ReactivityTransform(),
