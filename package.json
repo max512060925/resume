@@ -1,8 +1,8 @@
 {
   "private": true,
   "scripts": {
-    "build": "nuxt build",
-    "dev": "nuxt dev",
+    "build": "node copyCesiumStatic.mjs && nuxt build",
+    "dev": "node copyCesiumStatic.mjs && nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
@@ -12,7 +12,7 @@
     "@element-plus/nuxt": "^1.0.4",
     "@sidebase/nuxt-session": "^0.2.7",
     "@types/marked": "^4.3.0",
-    "@types/node": "^20.1.1",
+    "@types/node": "^20.1.2",
     "@types/three": "^0.152.0",
     "@unocss/extractor-pug": "^0.51.12",
     "@unocss/nuxt": "^0.51.12",
@@ -32,7 +32,7 @@
   "dependencies": {
     "cesium": "^1.105.0",
     "element-plus": "^2.3.4",
-    "file-type": "^18.3.0",
+    "file-type": "^18.4.0",
     "gsap": "^3.11.5",
     "highlight.js": "^11.8.0",
     "joi": "^17.9.2",
@@ -44,7 +44,7 @@
     "redis": "^4.6.6",
     "sequelize": "^6.31.1",
     "svg-captcha": "^1.4.0",
-    "swiper": "^9.3.0",
+    "swiper": "^9.3.1",
     "three": "^0.152.2"
   }
 }

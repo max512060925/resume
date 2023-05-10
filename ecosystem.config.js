@@ -26,9 +26,9 @@ module.exports = {
       // 最大内存限制数，超出自动重启
       // max_memory_restart: 8,
       // 自定义应用程序的错误日志文件(错误日志文件)
-      error_file: '/www/logs/server-err.log',
+      // error_file: '/www/logs/server-err.log',
       // // 自定义应用程序日志文件(正常日志文件)
-      out_file: '/www/logs/server-out.log',
+      // out_file: '/www/logs/server-out.log',
       // 设置追加日志而不是新建日志
       // merge_logs: true,
       // 指定日志文件的时间格式
@@ -54,14 +54,20 @@ module.exports = {
         // 环境参数，当前指定为生产环境 process.env.NODE_ENV
         NODE_ENV: 'production',
         // 当前环境接口地址，如果不用可不配置 process.env.REMOTE_ADDR
-        // REMOTE_ADDR: 'http://www.dzm.com/',
-        NUXT_OPENAI_KEY: '',
+        NUXT_OPENAI_KEY: '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',
+        NUXT_OPENAI_ORGANIZATION: 'org-YylBTCA6VQzjwPFhFklSeXuF',
         NUXT_OPENAI_MODEL: 'gpt-3.5-turbo',
-        NUXT_MYSQL_HOST: '',
-        NUXT_MYSQL_PORT: '',
-        NUXT_MYSQL_DATABASE: '',
-        NUXT_MYSQL_USERNAME: '',
-        NUXT_MYSQL_PASSWORD: '',
+        NUXT_MYSQL_HOST: 'maxwinnie.xyz',
+        NUXT_MYSQL_PORT: 3306,
+        NUXT_MYSQL_DATABASE: 'myDB',
+        NUXT_MYSQL_USERNAME: 'root',
+        NUXT_MYSQL_PASSWORD: '941722Zxc!',
+        NUXT_AUTH_SECRET: 'maxwinnie',
+        NUXT_REDIS_PORT: 6379,
+        NUXT_REDIS_PASSWORD: '941722Zxc!',
+        NUXT_CESIUM_TOKEN:
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJlZTlmNjZlOS05OGUwLTRmZmQtYmJlZC0xMjlmNmI5MzM2MjAiLCJpZCI6MTM3NDA5LCJpYXQiOjE2ODM2NDM4MTF9.FSOWNTT-TukegTplJw4-pPXVcIAwt3ZH381ti37Qr8c',
+        NUXT_DISK_PATH: '/disk',
       },
     },
   ],

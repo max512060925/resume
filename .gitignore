@@ -10,3 +10,4 @@ dist
 *.yaml
 temp/*
 public/cesium/*
+ecosystem.config.js

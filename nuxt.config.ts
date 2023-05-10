@@ -21,6 +21,9 @@ export default defineNuxtConfig({
     rootId: 'root',
     rootTag: 'section',
   },
+  routeRules: {
+    '/api/**': { cors: true },
+  },
   css: ['@unocss/reset/tailwind-compat.css', '@/assets/style/index.scss'],
   modules: [
     '@element-plus/nuxt',
@@ -72,7 +75,7 @@ export default defineNuxtConfig({
       },
     },
     disk: {
-      path: '/Users/yyb/Downloads',
+      path: '',
     },
   },
 

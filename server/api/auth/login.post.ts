@@ -8,6 +8,8 @@ export default defineEventHandler(async event => {
     const { code, password, ...parmas } = await readBody(event)
 
     const sessionId = event.context.session.id
+    console.log(7788)
+    console.log(sessionId)
     const redisCode = await redisClient.get(sessionId)
     if (!redisCode) {
       return failJsonBody(500, '验证码过期')

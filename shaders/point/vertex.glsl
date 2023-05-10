@@ -10,6 +10,4 @@ void main(){
   gl_Position=projectionMatrix*viewPosition;
   // 设置顶点大小
   gl_PointSize=size;
-  
 }
-
