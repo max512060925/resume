@@ -1,7 +1,8 @@
 {
   "private": true,
   "scripts": {
-    "build": "node build.mjs",
+    "build": "node copyCesiumStatic.mjs && nuxt build",
+    "zip": "node build.mjs",
     "dev": "node copyCesiumStatic.mjs && nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
@@ -22,6 +23,7 @@
     "@vue-macros/reactivity-transform": "^0.3.6",
     "@vueuse/core": "^10.1.2",
     "@vueuse/nuxt": "^10.1.2",
+    "compressing": "^1.9.0",
     "nuxt": "^3.4.3",
     "pug": "^3.0.2",
     "sass": "^1.62.1",
