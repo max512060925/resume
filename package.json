@@ -1,7 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "build": "node copyCesiumStatic.mjs && nuxt build",
+    "build": "node build.mjs",
     "dev": "node copyCesiumStatic.mjs && nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",

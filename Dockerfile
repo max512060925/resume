@@ -5,7 +5,7 @@ COPY . .
 # 开启pnpm支持
 RUN corepack enable
 RUN pnpm i
-RUN pnpm build 
+RUN pnpm build
 
 # 安装pm2
 RUN pnpm add pm2
