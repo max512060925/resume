@@ -29,7 +29,17 @@ if (process.client) {
   window['CESIUM_BASE_URL'] = '/cesium'
 }
 onMounted(() => {
-  const viewer = new Viewer(cesiumBox)
+  const viewer = new Viewer(cesiumBox, {
+    infoBox: false,
+    geocoder: false,
+    homeButton: false, // home按钮
+    sceneModePicker: false, //模式选择
+    baseLayerPicker: false, //图层选择
+    navigationHelpButton: false, //帮助按钮
+    animation: false, // 动画
+    timeline: false, // 时间轴
+    fullscreenButton: false, //全屏按钮
+  })
   viewer.cesiumWidget.creditContainer.remove()
 })
 </script>

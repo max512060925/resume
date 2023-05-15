@@ -57,7 +57,7 @@ module.exports = {
         NUXT_OPENAI_KEY: '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',
         NUXT_OPENAI_ORGANIZATION: 'org-YylBTCA6VQzjwPFhFklSeXuF',
         NUXT_OPENAI_MODEL: 'gpt-3.5-turbo',
-        NUXT_MYSQL_HOST: 'localhost',
+        NUXT_MYSQL_HOST: '103.80.27.187',
         NUXT_MYSQL_PORT: 3306,
         NUXT_MYSQL_DATABASE: 'myDB',
         NUXT_MYSQL_USERNAME: 'root',

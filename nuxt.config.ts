@@ -2,7 +2,8 @@ import glsl from 'vite-plugin-glsl'
 import IconsResolver from 'unplugin-icons/resolver'
 import { FileSystemIconLoader } from 'unplugin-icons/loaders'
 import Components from 'unplugin-vue-components/vite'
-
+import { fileURLToPath } from 'url'
+console.log(fileURLToPath(new URL('./assets/img', import.meta.url)))
 // import ReactivityTransform from '@vue-macros/reactivity-transform/vite'
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -21,6 +22,12 @@ export default defineNuxtConfig({
     rootId: 'root',
     rootTag: 'section',
   },
+  alias: {
+    //配置别名
+    img: fileURLToPath(new URL('./assets/img', import.meta.url)),
+    icon: fileURLToPath(new URL('./assets/icon', import.meta.url)),
+  },
+
   routeRules: {
     '/api/**': { cors: true },
   },
@@ -36,7 +43,7 @@ export default defineNuxtConfig({
         compiler: 'vue3',
         defaultClass: 'svg-icon',
         customCollections: {
-          icon: FileSystemIconLoader('./public/icon'),
+          icon: FileSystemIconLoader('./assets/icon'),
         },
       },
     ],

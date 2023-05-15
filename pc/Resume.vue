@@ -22,7 +22,7 @@
             img(
               v-show='showSkill',
               ref='skillRefs',
-              :src='["vant", "taro"].includes(item) ? `/img/${item}.png` : `/icon/${item}.svg`',
+              :src='getImgSrc(item)',
               class='h-[8vw]'
             )
     .swiper-slide(class='py-[80px]')
@@ -54,6 +54,7 @@
 </template>
 
 <script lang="ts" setup>
+import { skillsText } from '~/utils'
 import Swiper, { Pagination, Mousewheel } from 'swiper'
 import 'swiper/css/pagination'
 import { PerspectiveCamera, Scene, Object3D, Vector3, Group } from 'three'
@@ -247,6 +248,17 @@ const cancel = (controls, targets, render) => {
   controls.update()
   render()
 }
+const assets: Record<string, string> = import.meta.glob('~/assets/**/*', {
+  eager: true,
+  import: 'default',
+})
+
+const getImgSrc = item =>
+  assets[
+    ['vant', 'taro'].includes(item)
+      ? `/assets/img/${item}.png`
+      : `/assets/icon/${item}.svg`
+  ]
 
 onMounted(() => {
   new Swiper(swiperBox, {
