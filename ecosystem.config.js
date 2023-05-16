@@ -68,6 +68,7 @@ module.exports = {
         NUXT_CESIUM_TOKEN:
           'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJlZTlmNjZlOS05OGUwLTRmZmQtYmJlZC0xMjlmNmI5MzM2MjAiLCJpZCI6MTM3NDA5LCJpYXQiOjE2ODM2NDM4MTF9.FSOWNTT-TukegTplJw4-pPXVcIAwt3ZH381ti37Qr8c',
         NUXT_DISK_PATH: '/disk',
+        NUXT_TIANDI_TOKEN: '8340ca52252a6b40efb66f85ad37750f',
       },
     },
   ],

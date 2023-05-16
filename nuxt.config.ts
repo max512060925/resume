@@ -2,9 +2,8 @@ import glsl from 'vite-plugin-glsl'
 import IconsResolver from 'unplugin-icons/resolver'
 import { FileSystemIconLoader } from 'unplugin-icons/loaders'
 import Components from 'unplugin-vue-components/vite'
-import { fileURLToPath } from 'url'
-console.log(fileURLToPath(new URL('./assets/img', import.meta.url)))
-// import ReactivityTransform from '@vue-macros/reactivity-transform/vite'
+// @ts-expect-error
+import ReactivityTransform from '@vue-macros/reactivity-transform/vite'
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   app: {
@@ -21,15 +20,6 @@ export default defineNuxtConfig({
     },
     rootId: 'root',
     rootTag: 'section',
-  },
-  alias: {
-    //配置别名
-    img: fileURLToPath(new URL('./assets/img', import.meta.url)),
-    icon: fileURLToPath(new URL('./assets/icon', import.meta.url)),
-  },
-
-  routeRules: {
-    '/api/**': { cors: true },
   },
   css: ['@unocss/reset/tailwind-compat.css', '@/assets/style/index.scss'],
   modules: [
@@ -80,18 +70,20 @@ export default defineNuxtConfig({
       cesium: {
         token: process.env.NUXT_CESIUM_TOKEN,
       },
+      tianditu: {
+        token: process.env.NUXT_TIANDI_TOKEN,
+      },
     },
     disk: {
       path: '',
     },
   },
-
   experimental: {
-    reactivityTransform: true,
+    // reactivityTransform: true,
   },
   vite: {
     plugins: [
-      // ReactivityTransform(),
+      ReactivityTransform(),
       Components({
         resolvers: [
           IconsResolver({
