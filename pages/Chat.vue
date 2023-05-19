@@ -121,14 +121,14 @@ const send = async () => {
     content: params.input,
   })
   params.input = ''
-  const params = messages.map(({ role, content }) => ({ role, content }))
+  const query = messages.map(({ role, content }) => ({ role, content }))
   const info = {
     role: 'assistant',
     content: '',
     elm: null as HTMLDivElement | null,
   }
   messages.push(info)
-  const res = await chatCompletion(params)
+  const res = await chatCompletion(query)
   if (res) {
     const reader = res.getReader()
     scrollHeight = scrollbarRef.wrapRef.scrollHeight
