@@ -10,5 +10,5 @@ if (process.server) {
   const event = useRequestEvent()
   nuxtApp.payload.data.isMobile = event.context.isMobile
 }
-let { isMobile } = nuxtApp.payload.data
+const { isMobile } = nuxtApp.payload.data
 </script>

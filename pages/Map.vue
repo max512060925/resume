@@ -38,6 +38,19 @@ if (process.client) {
   window['CESIUM_BASE_URL'] = '/cesium'
 }
 
+const mapParams = {
+  SERVICE: 'WMTS',
+  REQUEST: 'GetTile',
+  VERSION: '1.0.0',
+  tileMatrixSet: 'w',
+  TileMatrix: '{TileMatrix}',
+  TileRow: '{TileRow}',
+  TileCol: '{TileCol}',
+  style: 'default',
+  format: 'tiles',
+  tk: tianditu.token,
+}
+
 onMounted(() => {
   const viewer = new Viewer(cesiumBox, {
     infoBox: false,
@@ -61,17 +74,8 @@ onMounted(() => {
     }),
     imageryProvider: new WebMapTileServiceImageryProvider({
       url: `http://t0.tianditu.gov.cn/img_w/wmts?${Qs.stringify({
-        SERVICE: 'WMTS',
-        REQUEST: 'GetTile',
-        VERSION: '1.0.0',
+        ...mapParams,
         LAYER: 'img',
-        tileMatrixSet: 'w',
-        TileMatrix: '{TileMatrix}',
-        TileRow: '{TileRow}',
-        TileCol: '{TileCol}',
-        style: 'default',
-        format: 'tiles',
-        tk: tianditu.token,
       })}`,
       layer: 'tdtBasicLayer',
       style: 'default',
@@ -83,17 +87,8 @@ onMounted(() => {
   const imageryLayer = new ImageryLayer(
     new WebMapTileServiceImageryProvider({
       url: `http://t0.tianditu.gov.cn/vec_w/wmts?${Qs.stringify({
-        SERVICE: 'WMTS',
-        REQUEST: 'GetTile',
-        VERSION: '1.0.0',
+        ...mapParams,
         LAYER: 'vec',
-        tileMatrixSet: 'w',
-        TileMatrix: '{TileMatrix}',
-        TileRow: '{TileRow}',
-        TileCol: '{TileCol}',
-        style: 'default',
-        format: 'tiles',
-        tk: tianditu.token,
       })}`,
       layer: 'tdtBasicLayer',
       style: 'default',

@@ -2,16 +2,16 @@
 .chat
   el-scrollbar.flex-1(ref='scrollbarRef')
     .w-full.border-b.text-gray-100(
-      v-for='({ isRobot, content }, i) in messages',
+      v-for='({ role, content }, i) in messages',
       class='border-gray-900/50',
-      :class='isRobot ? "bg-[#444654]" : "bg-gray-800"'
+      :class='role === "assistant" ? "bg-[#444654]" : "bg-gray-800"'
     )
       .text-base.gap-4.p-4.flex.m-auto(
         class='md:gap-6 md:max-w-2xl lg:max-w-xl xl:max-w-3xl md:py-6 lg:px-0'
       )
         .flex.items-center.justify-center.rounded-sm(
           class='w-[30px] h-[30px] bg-[#10a37f]',
-          v-if='isRobot'
+          v-if='role === "assistant"'
         )
           IconOpenAi
         .flex.items-center.bg-purple-800.justify-center.rounded-sm(
@@ -20,10 +20,10 @@
         ) Q
         .flex.flex-col.gap-1(
           class='w-[calc(100%-50px)] md:gap-3 lg:w-[calc(100%-115px)]',
-          :class='{ writing: waiting && isRobot && i === messages.length - 1, answer: isRobot }',
+          :class='{ writing: waiting && role === "assistant" && i === messages.length - 1, answer: role === "assistant" }',
           :ref='el => (messages[i].elm = el)'
         )
-          template(v-if='!isRobot') {{ content }}
+          template(v-if='role === "user"') {{ content }}
   el-form(@submit.native='submit', :model='params', v-if='show')
     .relative.mx-auto(class='w-3/4 lg:max-w-2xl xl:max-w-3xl')
       el-input(
@@ -57,22 +57,28 @@
 import type { ElScrollbar, ElInput } from 'element-plus'
 import { chatCompletion } from '@/api'
 import { marked } from 'marked'
+import { mangle } from 'marked-mangle'
+import { markedHighlight } from 'marked-highlight'
+import { gfmHeadingId } from 'marked-gfm-heading-id'
 import hljs from 'highlight.js'
 import 'highlight.js/styles/atom-one-dark.css'
 useHead({
   title: 'Chat-GPT 聊天',
 })
 
-marked.setOptions({
-  highlight: (code, lang) => {
-    if (lang && hljs.getLanguage(lang)) {
-      return hljs.highlight(code, { language: lang }).value
-    }
-    return hljs.highlightAuto(code).value
-  },
-})
-let scrollbarRef: typeof ElScrollbar = $ref()
-let inputRef: typeof ElInput = $ref()
+marked.use(mangle())
+marked.use(gfmHeadingId())
+marked.use(
+  markedHighlight({
+    langPrefix: 'hljs language-',
+    highlight(code, lang) {
+      const language = hljs.getLanguage(lang) ? lang : 'plaintext'
+      return hljs.highlight(code, { language }).value
+    },
+  })
+)
+let scrollbarRef: InstanceType<typeof ElScrollbar> = $ref()
+let inputRef: InstanceType<typeof ElInput> = $ref()
 let show = $ref(false)
 let messages = shallowReactive([])
 let params = shallowReactive({
@@ -90,11 +96,6 @@ watch(
     }
   }
 )
-const markedContent = content =>
-  marked.parse(content, {
-    breaks: true,
-    gfm: true,
-  })
 
 const inputEnter = e => {
   if (e.isComposing) {
@@ -117,22 +118,17 @@ const send = async () => {
   waiting = true
   messages.push({
     role: 'user',
-    isRobot: false,
     content: params.input,
   })
   params.input = ''
+  const params = messages.map(({ role, content }) => ({ role, content }))
   const info = {
-    role: '',
-    isRobot: true,
+    role: 'assistant',
     content: '',
     elm: null as HTMLDivElement | null,
   }
   messages.push(info)
-  const res = await chatCompletion(
-    messages
-      .filter(({ isRobot }) => !isRobot)
-      .map(({ role, content }) => ({ role, content }))
-  )
+  const res = await chatCompletion(params)
   if (res) {
     const reader = res.getReader()
     scrollHeight = scrollbarRef.wrapRef.scrollHeight
@@ -160,7 +156,7 @@ const send = async () => {
                 continue
               }
               info.content += delta.content
-              info.elm.innerHTML = markedContent(info.content)
+              info.elm.innerHTML = marked.parse(info.content)
               updateCursor(info.elm)
               if (scrollHeight !== scrollbarRef.wrapRef.scrollHeight) {
                 scrollHeight = scrollbarRef.wrapRef.scrollHeight
@@ -180,11 +176,11 @@ const send = async () => {
 
 const getLastTextNode = el => {
   const last = el.lastChild
-  if (last.nodeValue === '\n') {
+  if (last?.nodeValue === '\n') {
     last.remove()
     return getLastTextNode(el)
   }
-  if (last.nodeType === Node.ELEMENT_NODE) {
+  if (last?.nodeType === Node.ELEMENT_NODE) {
     return getLastTextNode(last)
   }
   return last
@@ -192,7 +188,7 @@ const getLastTextNode = el => {
 
 const updateCursor = el => {
   const textNode = getLastTextNode(el)
-  const parentElement = textNode ? textNode.parentElement : el
+  const parentElement = textNode?.parentElement || el
   const cursorText = document.createTextNode('\u200B')
   parentElement.appendChild(cursorText)
   const domRect = el.getBoundingClientRect()
@@ -213,7 +209,7 @@ onMounted(() => (show = true))
   tab-size: 4;
 
   &:after {
-    @apply content-[''] fixed w-full h-1/5 bg-gradient-to-t from-[#00000080] left-0 bottom-0 z-[1];
+    @apply content-[''] fixed w-full h-1/5 bg-gradient-to-t from-[#00000080] left-0 bottom-0 z-[1] pointer-events-none;
   }
   .answer {
     ::v-deep(p),
