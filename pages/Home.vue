@@ -1,7 +1,6 @@
 <template lang="pug">
-ClientOnly
-  MobileResume(v-if='isMobile')
-  PCResume(v-else)
+MobileResume(v-if='isMobile')
+PCResume(v-else)
 </template>
 <script lang="ts" setup>
 const nuxtApp = useNuxtApp()
