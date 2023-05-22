@@ -1,5 +1,5 @@
 <template lang="pug">
-.resume(ref='swiperBox')
+.resume(ref='swiperBox') 121212
   .swiper-wrapper
     .swiper-slide
       .mine
@@ -248,10 +248,13 @@ const cancel = (controls, targets, render) => {
   controls.update()
   render()
 }
-const assets: Record<string, string> = import.meta.glob('~/assets/**/*', {
-  eager: true,
-  import: 'default',
-})
+const assets: Record<string, string> = import.meta.glob(
+  ['~/assets/icon/*', '~/assets/img/*'],
+  {
+    eager: true,
+    import: 'default',
+  }
+)
 
 const getImgSrc = item =>
   assets[

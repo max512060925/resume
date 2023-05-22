@@ -38,9 +38,7 @@ export default defineNuxtConfig({
       },
     ],
   ],
-  elementPlus: {
-    importStyle: 'scss',
-  },
+
   session: {
     api: {
       isEnabled: false,
@@ -78,8 +76,9 @@ export default defineNuxtConfig({
       path: '',
     },
   },
-  experimental: {
-    // reactivityTransform: true,
+  // vueuse
+  vueuse: {
+    ssrHandlers: true,
   },
   vite: {
     plugins: [
@@ -99,9 +98,12 @@ export default defineNuxtConfig({
     css: {
       preprocessorOptions: {
         scss: {
-          additionalData: `@use "~/assets/style/vars.scss" as *;`,
+          additionalData: `@use '@/assets/style/vars.scss' as *;`,
         },
       },
     },
+  },
+  elementPlus: {
+    importStyle: 'scss',
   },
 })

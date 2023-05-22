@@ -1,5 +1,5 @@
 <template lang="pug">
-component(:is='isMobile ? mobileResume : pcResume')
+//- component(:is='isMobile ? mobileResume : pcResume')
 //- .test.w-full.h-full
 //-   el-button(@click='show = !show') test
 //-   //- 
@@ -8,8 +8,8 @@ component(:is='isMobile ? mobileResume : pcResume')
 //-       div Lorem ipsum dolor sit amet consectetur, adipisicing elit. Aspernatur vitae delectus ullam ducimus impedit sit, earum blanditiis explicabo incidunt repellat autem in dicta eaque deserunt non necessitatibus molestias? Dolorum, dolore. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Aspernatur vitae delectus ullam ducimus impedit sit, earum blanditiis explicabo incidunt repellat autem in dicta eaque deserunt non necessitatibus molestias? Dolorum, dolore. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Aspernatur vitae delectus ullam ducimus impedit sit, earum blanditiis explicabo incidunt repellat autem in dicta eaque deserunt non necessitatibus molestias? Dolorum, dolore. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Aspernatur vitae delectus ullam ducimus impedit sit, earum blanditiis explicabo incidunt repellat autem in dicta eaque deserunt non necessitatibus molestias? Dolorum, dolore.
 </template>
 <script lang="ts" setup>
-import pcResume from '~/pc/Resume.vue'
-import mobileResume from '~/mobile/Resume.vue'
+// import pcResume from '~/pc/Resume.vue'
+// import mobileResume from '~/mobile/Resume.vue'
 let show = $ref(false)
 const nuxtApp = useNuxtApp()
 

@@ -1,10 +1,9 @@
 <template lang="pug">
-component(:is='isMobile ? mobileResume : pcResume')
+ClientOnly
+  MobileResume(v-if='isMobile')
+  PCResume(v-else)
 </template>
 <script lang="ts" setup>
-import pcResume from '~/pc/Resume.vue'
-import mobileResume from '~/mobile/Resume.vue'
-
 const nuxtApp = useNuxtApp()
 if (process.server) {
   const event = useRequestEvent()
