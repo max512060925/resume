@@ -24,8 +24,15 @@
           :ref='el => (messages[i].elm = el)'
         )
           template(v-if='role === "user"') {{ content }}
-  el-form(@submit.native='submit', :model='params', v-if='show')
-    .relative.mx-auto(class='w-3/4 lg:max-w-2xl xl:max-w-3xl')
+  el-form.flex-col(@submit.native='submit', :model='params', v-if='show')
+    el-alert.mb-1(
+      v-show='isRecording',
+      class='!mx-auto w-3/4 lg:max-w-2xl xl:max-w-3xl',
+      title='录音中，再次点击麦克风图标结束录音',
+      type='info',
+      :closable='false'
+    )
+    .relative.flex-1.mx-auto(class='w-3/4 lg:max-w-2xl xl:max-w-3xl')
       el-input(
         ref='inputRef',
         v-model='params.input',
@@ -33,29 +40,46 @@
         resize='none',
         autosize,
         autofocus,
-        placeholder='输入内容...',
+        :placeholder='identifying ? "识别中..." : isRecording || isListening ? "聆听内容..." : "输入内容..."',
         :disabled='waiting',
         @keydown.enter='inputEnter',
         class='border-black/10 dark:border-gray-900/50 dark:text-white dark:bg-gray-700 shadow-[0_0_10px_rgba(0,0,0,0.10)] dark:shadow-[0_0_15px_rgba(0,0,0,0.10)]'
       )
-      button.absolute.p-1.rounded-md.text-gray-500.right-1.bottom-3.bg-transparent(
-        class='hover:bg-gray-900',
-        v-if='!waiting',
-        type='submit'
-      )
-        IconSend
+      el-popover(placement='top', :width='150')
+        template(#default)
+          el-radio-group(
+            v-model='useBackend',
+            :disabled='isRecording || isListening || identifying'
+          )
+            el-radio(:label='false') 本地识别
+            el-radio(:label='true') openAi识别
+        template(#reference)
+          button.absolute.p-1.rounded-md.text-gray-500.right-8.bottom-3.bg-transparent(
+            class='hover:bg-gray-900',
+            :class='{ "bg-gray-900": isRecording }',
+            @click='microphone',
+            type='button'
+          )
+            IconMicrophone
+
       button.spin.absolute.flex.p-1.rounded-md.text-gray-500.right-1.cursor-wait.bottom-4.bg-transparent(
         class='gap-x-[3px]',
         type='button',
-        v-else
+        v-if='waiting || isRecording || identifying'
       )
         span
         span
         span
+      button.absolute.p-1.rounded-md.text-gray-500.right-1.bottom-3.bg-transparent(
+        class='hover:bg-gray-900',
+        v-else,
+        type='submit'
+      )
+        IconSend
 </template>
 <script lang="ts" setup>
 import type { ElScrollbar, ElInput } from 'element-plus'
-import { chatCompletion } from '@/api'
+import { chatCompletion, fileUpload, chatAudio } from '@/api'
 import { marked } from 'marked'
 import { mangle } from 'marked-mangle'
 import { markedHighlight } from 'marked-highlight'
@@ -65,7 +89,17 @@ import 'highlight.js/styles/atom-one-dark.css'
 useHead({
   title: 'Chat-GPT 聊天',
 })
+const audioMedia = useUserMedia({
+  constraints: { audio: true },
+})
 
+let { isListening, result, start, stop } = $(
+  useSpeechRecognition({
+    lang: 'zh-CN',
+    continuous: false,
+  })
+)
+let useBackend = $ref(false)
 marked.use(mangle())
 marked.use(gfmHeadingId())
 marked.use(
@@ -97,6 +131,41 @@ watch(
   }
 )
 
+let readContent = [],
+  sentence = ''
+const read = (content?) => {
+  if (!readContent.length && !/[。.，,、?﹖；;：:！!]/.test(content)) {
+    sentence += content
+  } else {
+    if (sentence) {
+      content = `${sentence}${content}`
+      sentence = ''
+    }
+    readContent.push(...content.split(/[。.，,、?﹖；;：:！!]/g))
+    speak()
+  }
+}
+const voice = process.client
+  ? speechSynthesis
+      .getVoices()
+      .find(({ name }) => name === 'Tingting' || /普通话/.test(name))
+  : null
+
+const speak = () => {
+  while (readContent.length) {
+    const content = readContent.shift()
+    if (content.trim()) {
+      const utterance = new SpeechSynthesisUtterance(content)
+      utterance.lang = 'zh-CN'
+      utterance.voice = voice
+      utterance.pitch = 1
+      utterance.rate = 1
+      utterance.volume = 1
+      speechSynthesis.speak(utterance)
+    }
+  }
+}
+
 const inputEnter = e => {
   if (e.isComposing) {
     return
@@ -109,6 +178,13 @@ const submit = e => {
   send()
 }
 
+const resetScrollBar = () => {
+  if (scrollHeight !== scrollbarRef.wrapRef.scrollHeight) {
+    scrollHeight = scrollbarRef.wrapRef.scrollHeight
+    scrollbarRef.setScrollTop(scrollHeight)
+  }
+}
+
 const send = async () => {
   if (waiting) {
     return
@@ -116,10 +192,12 @@ const send = async () => {
     return customMessage.error('请输入内容！')
   }
   waiting = true
+  speechSynthesis.cancel()
   messages.push({
     role: 'user',
     content: params.input,
   })
+  resetScrollBar()
   params.input = ''
   const query = messages.map(({ role, content }) => ({ role, content }))
   const info = {
@@ -156,12 +234,10 @@ const send = async () => {
                 continue
               }
               info.content += delta.content
-              info.elm.innerHTML = marked.parse(info.content)
               updateCursor(info.elm)
-              if (scrollHeight !== scrollbarRef.wrapRef.scrollHeight) {
-                scrollHeight = scrollbarRef.wrapRef.scrollHeight
-                scrollbarRef.setScrollTop(scrollHeight)
-              }
+              read(delta.content)
+              info.elm.innerHTML = marked.parse(info.content)
+              resetScrollBar()
             } catch (error) {
               console.error('内容解析出错', msg, error)
             }
@@ -200,6 +276,71 @@ const updateCursor = el => {
   cursor.y = rect.top - domRect.top
   parentElement.removeChild(cursorText)
 }
+let audioRecorder: MediaRecorder = null,
+  chunks = []
+let isRecording = $ref(false)
+let identifying = $ref(false)
+
+watch(
+  () => isListening,
+  val => {
+    if (!val && result?.trim()) {
+      params.input = result.trim()
+      send()
+    }
+  }
+)
+const microphone = () => {
+  if (useBackend) {
+    record()
+  } else {
+    start()
+  }
+}
+const record = async () => {
+  if (!isRecording) {
+    try {
+      const stream = await audioMedia.start()
+      audioRecorder = new MediaRecorder(stream, { mimeType: 'video/webm' })
+      chunks = []
+      // 处理录制的数据块
+      audioRecorder.ondataavailable = ({ data }) => {
+        if (data.size > 0) {
+          chunks.push(data)
+        }
+      }
+      // 录制停止时触发的事件
+      audioRecorder.onstop = async () => {
+        // 创建一个 Blob 对象，将所有录制的数据块合并成一个
+        const formData = new FormData()
+        formData.append(
+          'file',
+          new Blob(chunks, { type: 'video/webm' }),
+          `${Date.now()}.webm`
+        )
+        identifying = true
+        const { data: filePath } = await fileUpload(formData)
+        const res = await chatAudio({ filePath })
+        if (res) {
+          params.input = res.data
+          send()
+        }
+        identifying = false
+      }
+      // 开始录制
+      audioRecorder.start()
+      isRecording = true
+      params.input = ''
+    } catch (error) {
+      customMessage.error('开启录音失败！')
+    }
+  } else {
+    audioMedia.stop()
+    audioRecorder?.stop()
+    audioRecorder = null
+    isRecording = false
+  }
+}
 
 onMounted(() => (show = true))
 </script>
@@ -213,7 +354,8 @@ onMounted(() => (show = true))
   }
   .answer {
     ::v-deep(p),
-    ::v-deep(li) {
+    ::v-deep(li),
+    ::v-deep(pre) {
       @apply mb-5;
       &:not(:first) {
         @apply mt-5;
@@ -221,9 +363,6 @@ onMounted(() => (show = true))
       &:last-child {
         @apply mt-0;
       }
-    }
-    ::v-deep(pre) {
-      @apply bg-black rounded-md mb-4 p-4 overflow-y-auto;
     }
   }
   .writing {

@@ -1,5 +1,7 @@
 import type { H3Event } from 'h3'
 import { createHash } from 'node:crypto'
+import { Configuration, OpenAIApi } from 'openai'
+const { openai } = useRuntimeConfig()
 
 export const resJsonBody = (data?: any) => ({
   code: 0,
@@ -19,3 +21,10 @@ export const failJsonBody = (code: number, msg: string, event?: H3Event) => {
 
 export const passwordEncode = password =>
   createHash('sha256').update(password).digest('hex')
+
+export const openaiApi = new OpenAIApi(
+  new Configuration({
+    apiKey: openai.key,
+    organization: openai.organization,
+  })
+)

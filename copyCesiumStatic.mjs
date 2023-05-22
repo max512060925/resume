@@ -1,4 +1,4 @@
-import { cp } from 'fs/promises'
+import { cp } from 'node:fs/promises'
 const dirs = ['Assets', 'ThirdParty', 'Widgets', 'Workers']
 await Promise.all(
   dirs.map(name =>

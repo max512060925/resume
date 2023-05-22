@@ -1,27 +1,22 @@
-import { writeFile, access, mkdir, constants } from 'fs/promises'
-import { join } from 'path'
+import { writeFile, mkdir } from 'node:fs/promises'
+import { existsSync } from 'node:fs'
+import { join } from 'node:path'
 
 const Temp = join(process.cwd(), 'temp') // 临时文件夹
-access(Temp, constants.R_OK | constants.W_OK).catch(() => mkdir(Temp))
+
+if (!existsSync(Temp)) {
+  mkdir(Temp)
+}
 
 export default defineEventHandler(async event => {
   try {
-    const formData = await readMultipartFormData(event)
-    const filename = formData
-      .find(({ name }) => name === 'filename')
-      .data.toString()
-    if (
-      Boolean(
-        await access(join(Temp, filename), constants.F_OK).catch(() => true)
-      )
-    ) {
-      await writeFile(
-        join(Temp, filename),
-        formData.find(({ name }) => name === 'file').data
-      )
+    const [{ filename, data }] = await readMultipartFormData(event)
+    if (!existsSync(join(Temp, filename))) {
+      await writeFile(join(Temp, filename), data)
     }
-    return resJsonBody(filename)
+    return resJsonBody(join(Temp, filename))
   } catch (e) {
+    console.log(e)
     return failJsonBody(500, String(e), event)
   }
 })

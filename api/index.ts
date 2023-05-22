@@ -1,6 +1,9 @@
 import request from '@/utils/request'
 
-export const chatCompletion = async data =>
-  await request.post('/api/chat/completion', data, {
+export const chatCompletion = data =>
+  request.post('/api/chat/completion', data, {
     responseType: 'stream',
   })
+export const chatAudio = data => request.post('/api/chat/audio', data)
+
+export const fileUpload = data => request.post('/api/file/upload', data)

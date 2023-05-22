@@ -1,5 +1,5 @@
-import { readdir, stat } from 'fs/promises'
-import { resolve, join } from 'path'
+import { readdir, stat } from 'node:fs/promises'
+import { resolve, join } from 'node:path'
 import { fileTypeFromFile } from 'file-type'
 
 const {

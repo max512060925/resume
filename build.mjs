@@ -1,4 +1,4 @@
-import { rm, cp } from 'fs/promises'
+import { rm, cp } from 'node:fs/promises'
 import { runCommand } from 'nuxi'
 import { zip } from 'compressing'
 

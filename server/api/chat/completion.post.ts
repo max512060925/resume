@@ -1,12 +1,6 @@
-import { Configuration, OpenAIApi } from 'openai'
 import type { ChatCompletionRequestMessageRoleEnum } from 'openai'
 const { openai } = useRuntimeConfig()
-const openaiApi = new OpenAIApi(
-  new Configuration({
-    apiKey: openai.key,
-    organization: openai.organization,
-  })
-)
+
 export default defineEventHandler(async event => {
   try {
     const messages: {

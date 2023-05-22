@@ -96,5 +96,12 @@ export default defineNuxtConfig({
 
       glsl(),
     ],
+    css: {
+      preprocessorOptions: {
+        scss: {
+          additionalData: `@use "~/assets/style/vars.scss" as *;`,
+        },
+      },
+    },
   },
 })
