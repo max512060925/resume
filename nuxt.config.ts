@@ -102,6 +102,15 @@ export default defineNuxtConfig({
         },
       },
     },
+    build: {
+      minify: 'terser',
+      terserOptions: {
+        compress: {
+          drop_console: import.meta.env.PROD,
+          drop_debugger: import.meta.env.PROD,
+        },
+      },
+    },
   },
   elementPlus: {
     importStyle: 'scss',

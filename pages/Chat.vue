@@ -93,7 +93,7 @@ const audioMedia = useUserMedia({
   constraints: { audio: true },
 })
 
-let { isListening, result, start, stop } = $(
+let { isListening, result, start } = $(
   useSpeechRecognition({
     lang: 'zh-CN',
     continuous: false,
@@ -133,17 +133,17 @@ watch(
 
 let readContent = [],
   sentence = ''
-const read = (content?) => {
-  if (!readContent.length && !/[。.，,、?﹖；;：:！!]/.test(content)) {
-    sentence += content
-  } else {
-    if (sentence) {
-      content = `${sentence}${content}`
-      sentence = ''
+const read = (content = '') => {
+  if (content) {
+    if (!readContent.length && !/[。.，,、?﹖；;：:！!]/.test(content)) {
+      sentence += content
+      return
     }
-    readContent.push(...content.split(/[。.，,、?﹖；;：:！!]/g))
-    speak()
   }
+  content = `${sentence}${content}`
+  sentence = ''
+  readContent.push(...content.split(/[。.，,、?﹖；;：:！!]/g))
+  speak()
 }
 const voice = process.client
   ? speechSynthesis
@@ -223,6 +223,7 @@ const send = async () => {
           const messages = chunk.split(/data:|\n/).filter(s => s?.trim())
           for (const msg of messages) {
             if (/\[DONE\]/.test(msg)) {
+              read()
               waiting = false
               return
             }

@@ -3,7 +3,7 @@
   Loading(:percentage='percentage', :load-text='loadText', v-if='!loading')
   .absolute.bottom-5(v-else, class='w-11/12 left-1/2 -translate-x-1/2')
     component.text-900.cursor-pointer(
-      :is='defineComponent(start ? IconPause : IconPlay)',
+      :is='start ? IconPause : IconPlay',
       @click='play',
       class='!text-[5vmin]'
     )
