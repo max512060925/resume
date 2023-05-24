@@ -21,11 +21,8 @@ export class FetchRequest {
     try {
       options = { ...this.options, ...options }
       const source = new AbortController()
+      url = this.setURL(url)
       this.source.set(url, source)
-      if (options.prefix) {
-        const prefix = options.prefix
-        url = `${prefix}${url}`
-      }
       if (options.params) {
         url += `?${QS.stringify(options.params)}`
       }
@@ -61,7 +58,9 @@ export class FetchRequest {
       }
     }
   }
-
+  setURL(url) {
+    return `${this.options.prefix}/${url}`.replace(/([^:]\/)\/+/g, '$1')
+  }
   async get(api, params?) {
     return await this.send(api, { params, method: 'get', responseType: 'json' })
   }

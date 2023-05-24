@@ -1,22 +1,11 @@
 import {
   LoadingManager,
-  Scene,
-  PerspectiveCamera,
-  WebGLRenderer,
-  Clock,
-  AxesHelper,
   Audio,
   AudioListener,
   AudioLoader,
-  AmbientLight,
   AnimationClip,
-  Color,
-  DirectionalLight,
-  sRGBEncoding,
-  Vector3,
 } from 'three'
 import type { SkinnedMesh } from 'three'
-// import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { MMDLoader } from 'three/examples/jsm/loaders/MMDLoader.js'
 import type { MMDLoaderAnimationObject } from 'three/examples/jsm/loaders/MMDLoader.js'
 import { MMDAnimationHelper } from 'three/examples/jsm/animation/MMDAnimationHelper.js'
@@ -38,6 +27,7 @@ export default class MMD {
     this.mmdLoader = new MMDLoader(this.manager)
     this.audioLoader = new AudioLoader(this.manager)
   }
+
   loadModelAndAnimation({ pmx, vmd }: MMDParams): Promise<SkinnedMesh> {
     return new Promise(resolve =>
       this.mmdLoader.loadWithAnimation(pmx, vmd, ({ mesh, animation }) => {

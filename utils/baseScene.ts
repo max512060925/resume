@@ -1,20 +1,13 @@
 import {
-  LoadingManager,
   Scene,
   PerspectiveCamera,
   WebGLRenderer,
   Clock,
   AxesHelper,
-  Audio,
-  AudioListener,
-  AudioLoader,
   AmbientLight,
-  AnimationClip,
   Color,
   DirectionalLight,
   SRGBColorSpace,
-  Vector3,
-  Group,
 } from 'three'
 import type { ColorRepresentation } from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
@@ -77,8 +70,10 @@ export class BaseWord {
       : this.camera.position.set(0, 10, 10)
 
     this.clock = new Clock()
-    this.needControl = control
-    this.scene.add(new AxesHelper(5))
+    this.needControl = Boolean(control)
+    if (import.meta.env.DEV) {
+      this.scene.add(new AxesHelper(5))
+    }
     this.scene.add(this.camera)
   }
   start(canvas: HTMLCanvasElement) {

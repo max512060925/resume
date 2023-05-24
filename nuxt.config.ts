@@ -2,8 +2,9 @@ import glsl from 'vite-plugin-glsl'
 import IconsResolver from 'unplugin-icons/resolver'
 import { FileSystemIconLoader } from 'unplugin-icons/loaders'
 import Components from 'unplugin-vue-components/vite'
-// @ts-expect-error
 import ReactivityTransform from '@vue-macros/reactivity-transform/vite'
+import { prefetch } from './utils/prefetch'
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   app: {
@@ -16,6 +17,7 @@ export default defineNuxtConfig({
           rel: 'icon',
           href: '/favicon.ico',
         },
+        ...prefetch,
       ],
     },
     rootId: 'root',

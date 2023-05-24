@@ -15,12 +15,12 @@
     "@types/marked": "^5.0.0",
     "@types/node": "^20.2.3",
     "@types/three": "^0.152.0",
-    "@unocss/extractor-pug": "^0.52.1",
+    "@unocss/extractor-pug": "^0.52.3",
     "@unocss/nuxt": "^0.52.3",
     "@unocss/preset-wind": "^0.52.3",
     "@unocss/reset": "^0.52.3",
     "@volar/vue-language-plugin-pug": "^1.6.5",
-    "@vue-macros/reactivity-transform": "^0.3.7",
+    "@vue-macros/reactivity-transform": "^0.3.8",
     "@vueuse/core": "^10.1.2",
     "@vueuse/nuxt": "^10.1.2",
     "compressing": "^1.9.0",
@@ -32,6 +32,7 @@
     "vite-plugin-glsl": "^1.1.2"
   },
   "dependencies": {
+    "ammo.js": "^0.0.10",
     "cesium": "^1.105.2",
     "element-plus": "^2.3.5",
     "file-type": "^18.4.0",
