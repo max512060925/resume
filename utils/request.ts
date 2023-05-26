@@ -59,7 +59,18 @@ export class FetchRequest {
     }
   }
   setURL(url) {
-    return `${this.options.prefix}/${url}`.replace(/([^:]\/)\/+/g, '$1')
+    if (this.options.prefix && !this.isAbsoluteURL(url)) {
+      return this.combineURLs(this.options.prefix, url)
+    }
+    return url
+  }
+  private combineURLs(baseURL, relativeURL) {
+    return relativeURL
+      ? baseURL.replace(/\/+$/, '') + '/' + relativeURL.replace(/^\/+/, '')
+      : baseURL
+  }
+  private isAbsoluteURL(url) {
+    return /^([a-z][a-z\d+\-.]*:)?\/\//i.test(url)
   }
   async get(api, params?) {
     return await this.send(api, { params, method: 'get', responseType: 'json' })

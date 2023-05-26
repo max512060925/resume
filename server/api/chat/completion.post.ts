@@ -17,6 +17,7 @@ export default defineEventHandler(async event => {
         responseType: 'stream',
       }
     )
+    event.node.res.setHeader('Content-Type', 'application/octet-stream')
     return sendStream(event, res.data)
   } catch (e) {
     return failJsonBody(500, String(e), event)
