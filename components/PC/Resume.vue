@@ -1,5 +1,5 @@
 <template lang="pug">
-.resume(ref='swiperBox') 121212
+.resume(ref='swiperBox')
   .swiper-wrapper
     .swiper-slide
       .mine
