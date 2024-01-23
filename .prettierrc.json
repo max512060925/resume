@@ -1,0 +1,13 @@
+{
+  "plugins": [
+    "@prettier/plugin-pug"
+  ],
+  "printWidth": 200,
+  "arrowParens": "avoid",
+  "semi": false,
+  "singleQuote": true,
+  "jsxSingleQuote": true,
+  "proseWrap": "preserve",
+  "quoteProps": "preserve",
+  "trailingComma": "none"
+}

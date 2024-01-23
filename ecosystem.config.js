@@ -54,9 +54,9 @@ module.exports = {
         // 环境参数，当前指定为生产环境 process.env.NODE_ENV
         NODE_ENV: 'production',
         // 当前环境接口地址，如果不用可不配置 process.env.REMOTE_ADDR
-        NUXT_OPENAI_KEY: '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',
+        NUXT_OPENAI_KEY: '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',
         NUXT_OPENAI_ORGANIZATION: 'org-YylBTCA6VQzjwPFhFklSeXuF',
-        NUXT_OPENAI_MODEL: 'gpt-3.5-turbo-0301',
+        NUXT_OPENAI_MODEL: 'gpt-3.5-turbo-16k-0613',
         NUXT_MYSQL_HOST: '103.80.27.187',
         NUXT_MYSQL_PORT: 3306,
         NUXT_MYSQL_DATABASE: 'myDB',

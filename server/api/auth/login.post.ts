@@ -16,14 +16,14 @@ export default defineEventHandler(async event => {
     }
     redisClient.del(sessionId)
     const res = await UserModel.findOne({
-      where: { ...parmas, password: passwordEncode(password) },
+      where: { ...parmas, password: passwordEncode(password) }
     })
 
     if (res) {
       const token = jwt.sign(
         {
           exp: Date.now() + 1000 * 60 * 60,
-          uid: res.id,
+          uid: res.id
         },
         auth.secret
       )

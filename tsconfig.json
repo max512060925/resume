@@ -8,10 +8,11 @@
     "strict": false,
     "types": [
       "@vue-macros/reactivity-transform/macros-global",
-      "unplugin-icons/types/vue"
+      "unplugin-icons/types/vue",
+      "element-plus/global"
     ],
 
-    "moduleResolution": "bundler",
+    "moduleResolution": "node",
     "lib": ["esnext", "dom", "dom.iterable"]
   }
 }

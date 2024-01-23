@@ -11,10 +11,11 @@ if (!existsSync(Temp)) {
 export default defineEventHandler(async event => {
   try {
     const [{ filename, data }] = await readMultipartFormData(event)
-    if (!existsSync(join(Temp, filename))) {
-      await writeFile(join(Temp, filename), data)
+    const path = join(Temp, filename)
+    if (!existsSync(path)) {
+      await writeFile(path, data)
     }
-    return resJsonBody(join(Temp, filename))
+    return resJsonBody(path)
   } catch (e) {
     console.log(e)
     return failJsonBody(500, String(e), event)

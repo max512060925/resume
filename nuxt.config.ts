@@ -2,6 +2,7 @@ import glsl from 'vite-plugin-glsl'
 import IconsResolver from 'unplugin-icons/resolver'
 import { FileSystemIconLoader } from 'unplugin-icons/loaders'
 import Components from 'unplugin-vue-components/vite'
+
 import ReactivityTransform from '@vue-macros/reactivity-transform/vite'
 import { prefetch } from './utils/prefetch'
 
@@ -9,19 +10,20 @@ import { prefetch } from './utils/prefetch'
 export default defineNuxtConfig({
   app: {
     head: {
-      meta: [
-        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      ],
+      meta: [{ name: 'viewport', content: 'width=device-width, initial-scale=1' }],
       link: [
         {
           rel: 'icon',
-          href: '/favicon.ico',
+          href: '/favicon.ico'
         },
-        ...prefetch,
-      ],
+        ...prefetch
+      ]
     },
     rootId: 'root',
-    rootTag: 'section',
+    rootTag: 'section'
+  },
+  routeRules: {
+    '/iptv/**': { proxy: 'http://gslbserv.itv.cmvideo.cn/**' }
   },
   css: ['@unocss/reset/tailwind-compat.css', '@/assets/style/index.scss'],
   modules: [
@@ -35,52 +37,52 @@ export default defineNuxtConfig({
         compiler: 'vue3',
         defaultClass: 'svg-icon',
         customCollections: {
-          icon: FileSystemIconLoader('./assets/icon'),
-        },
-      },
-    ],
+          icon: FileSystemIconLoader('./assets/icon')
+        }
+      }
+    ]
   ],
 
   session: {
     api: {
-      isEnabled: false,
-    },
+      isEnabled: false
+    }
   },
   runtimeConfig: {
     openai: {
       key: '',
       model: '',
-      organization: '',
+      organization: ''
     },
     auth: {
-      secret: '',
+      secret: ''
     },
     mysql: {
       host: '',
       port: '',
       database: '',
       username: '',
-      password: '',
+      password: ''
     },
     redis: {
       port: '',
-      password: '',
+      password: ''
     },
     public: {
       cesium: {
-        token: process.env.NUXT_CESIUM_TOKEN,
+        token: process.env.NUXT_CESIUM_TOKEN
       },
       tianditu: {
-        token: process.env.NUXT_TIANDI_TOKEN,
-      },
+        token: process.env.NUXT_TIANDI_TOKEN
+      }
     },
     disk: {
-      path: '',
-    },
+      path: ''
+    }
   },
   // vueuse
   vueuse: {
-    ssrHandlers: true,
+    ssrHandlers: true
   },
   vite: {
     plugins: [
@@ -90,31 +92,31 @@ export default defineNuxtConfig({
           IconsResolver({
             prefix: false, // 自动引入的Icon组件统一前缀，默认为 i，设置false为不需要前缀
             // {prefix}-{collection}-{icon} 使用组件解析器时，您必须遵循名称转换才能正确推断图标。
-            enabledCollections: ['icon'],
-          }),
-        ],
+            enabledCollections: ['icon']
+          })
+        ]
       }),
 
-      glsl(),
+      glsl()
     ],
     css: {
       preprocessorOptions: {
         scss: {
-          additionalData: `@use '@/assets/style/vars.scss' as *;`,
-        },
-      },
+          additionalData: `@use '@/assets/style/vars.scss' as *;`
+        }
+      }
     },
     build: {
       minify: 'terser',
       terserOptions: {
         compress: {
           drop_console: import.meta.env.PROD,
-          drop_debugger: import.meta.env.PROD,
-        },
-      },
-    },
+          drop_debugger: import.meta.env.PROD
+        }
+      }
+    }
   },
   elementPlus: {
-    importStyle: 'scss',
-  },
+    importStyle: 'scss'
+  }
 })
